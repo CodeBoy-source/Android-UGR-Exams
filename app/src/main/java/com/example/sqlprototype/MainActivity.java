@@ -46,9 +46,6 @@ public class MainActivity extends AppCompatActivity {
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
                             android.R.layout.simple_list_item_1,resultado);
                     // Assign adapter to ListView
-                    System.out.println(" ######### Q Result ##########");
-                    System.out.println(asign + " - " + carr + " - " + test);
-                    System.out.println("##############################");
                     Q_res.setAdapter(adapter);
                     Toast.makeText(MainActivity.this,"Query Submitted",Toast.LENGTH_SHORT).show();
                     db.close();

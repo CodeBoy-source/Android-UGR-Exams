@@ -36,11 +36,9 @@ public class DataBaseAccess {
     public String getDate(String Asign, String Carr){
         c = db.rawQuery("Select * from merged where lower(Tit)=? and lower(Nombre)=?", new String[]{Carr, Asign});
         StringBuffer buffer = new StringBuffer();
-        System.out.println(c.getCount());
         if(c.getCount()>0) {
-            System.out.println("FOUND SOMETHING");
             while (c.moveToNext()) {
-                String Fecha = c.getString(7);
+                String Fecha = c.getString(1);
                 buffer.append("\n" + Fecha);
             }
         }
