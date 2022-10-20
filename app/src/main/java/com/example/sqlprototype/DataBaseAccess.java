@@ -38,7 +38,7 @@ public class DataBaseAccess {
         StringBuffer buffer = new StringBuffer();
         if(c.getCount()>0) {
             while (c.moveToNext()) {
-                String Fecha = c.getString(1);
+                String Fecha = c.getString(7);
                 buffer.append("\n" + Fecha);
             }
         }
