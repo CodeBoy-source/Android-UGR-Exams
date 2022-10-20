@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import java.lang.*;
+
 
 public class DataBaseAccess {
     private SQLiteOpenHelper openHelper;
@@ -33,7 +35,41 @@ public class DataBaseAccess {
         }
     }
 
+    public String getBestCarrMatch(String str_a ){
+        str_a.toLowerCase();
+        c = db.rawQuery("Select distinct lower(Tit) from merged", new String[]{});
+        String valor;
+        if(c.getCount()>0){
+            while(c.moveToNext()){
+                valor = c.getString(0);
+                if (Fuzzy.LevenshteinDistance(str_a,valor)<=2){
+                    str_a = valor;
+                    break;
+                }
+            }
+        }
+        return str_a;
+    }
+
+    public String getBestAsignMatch(String str_a){
+        str_a.toLowerCase();
+        c = db.rawQuery("Select distinct lower(Nombre) from merged", new String[]{});
+        String valor;
+        if(c.getCount()>0){
+            while(c.moveToNext()){
+                valor = c.getString(0);
+                if (Fuzzy.LevenshteinDistance(str_a,valor)<=2){
+                    str_a = valor;
+                    break;
+                }
+            }
+        }
+        return str_a;
+    }
+
     public String getDate(String Asign, String Carr){
+        Asign = getBestAsignMatch(Asign) ;
+        Carr = getBestCarrMatch(Carr) ;
         c = db.rawQuery("Select * from merged where lower(Tit)=? and lower(Nombre)=?", new String[]{Carr, Asign});
         StringBuffer buffer = new StringBuffer();
         if(c.getCount()>0) {
