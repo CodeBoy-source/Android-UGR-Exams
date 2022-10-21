@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -103,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
 
+        btnSubmit.setEnabled(false);
+
         // Set listeners to each btn, lbl and txt of each group
         for (Group group : groups) {
             group.btn.setOnClickListener(new View.OnClickListener(){
@@ -139,6 +143,25 @@ public class MainActivity extends AppCompatActivity {
                         setFocusToCurrentGroup();
                     }
                 }
+            });
+
+            group.txt.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    boolean all_filled = true;
+                    for (Group group : groups) {
+                        if (String.valueOf(group.txt.getText()).isEmpty()) {
+                            all_filled = false;
+                        }
+                    }
+                    btnSubmit.setEnabled(all_filled);
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {}
             });
         }
 
