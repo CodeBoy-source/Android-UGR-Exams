@@ -10,6 +10,7 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.speech.tts.TextToSpeech;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     Group currentGroup;
     Group[] groups;
     ListView Q_res;
+    private TextToSpeech textToSpeechEngine;
+    private Button ttsButton;
 
     SpeechRecognizer speechRecognizer;
 
@@ -65,6 +70,12 @@ public class MainActivity extends AppCompatActivity {
         group.btn.setAlpha((float) perc);
     }
 
+    void textToSpeechGroup(Group group){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            textToSpeechEngine.speak(group.lbl.getText(), TextToSpeech.QUEUE_FLUSH, null, "tts1");
+        }
+    }
+
     void setFocusToCurrentGroup() {
         for (Group other_group : groups) {
             if (other_group != currentGroup) {
@@ -72,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         setGroupTransparency(currentGroup, 1);
+        textToSpeechGroup(currentGroup);
     }
 
     @Override
@@ -93,6 +105,15 @@ public class MainActivity extends AppCompatActivity {
         lblAsignatura = this.findViewById(R.id.lblAsignatura);
         lblConvocatoria = this.findViewById(R.id.lblConvocatoria);
         Q_res = this.findViewById(R.id.Q_res);
+
+        textToSpeechEngine = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status != TextToSpeech.SUCCESS) {
+                    Log.e("TTS", "Inicio de la síntesis fallido");
+                }
+            }
+        });
 
         Group grpCarrera = new Group(txtCarrera, btnCarrera, lblCarrera);
         Group grpAsignatura = new Group(txtAsignatura, btnAsignatura, lblAsignatura);
@@ -219,6 +240,17 @@ public class MainActivity extends AppCompatActivity {
                     resultado[0] = db.getDate(asign,carr,conv);
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
                             android.R.layout.simple_list_item_1,resultado);
+
+                    if(!resultado[0].isEmpty()){
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            textToSpeechEngine.speak(resultado[0], TextToSpeech.QUEUE_FLUSH, null, "tts1");
+                        }
+                    }
+
+                    for (Group group : groups) {
+                        group.txt.setText("");
+                    }
+
                     // Assign adapter to ListView
                     Q_res.setAdapter(adapter);
                     Toast.makeText(MainActivity.this,"Query Submitted",Toast.LENGTH_SHORT).show();
@@ -226,6 +258,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 catch (Exception e){
                     Toast.makeText(MainActivity.this,"There's been an Error",Toast.LENGTH_SHORT).show();
+                  
                 }
             }
         });
