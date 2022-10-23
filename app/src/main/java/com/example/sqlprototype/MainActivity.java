@@ -70,6 +70,12 @@ public class MainActivity extends AppCompatActivity {
         group.btn.setAlpha((float) perc);
     }
 
+    void textToSpeechGroup(Group group){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            textToSpeechEngine.speak(group.lbl.getText(), TextToSpeech.QUEUE_FLUSH, null, "tts1");
+        }
+    }
+
     void setFocusToCurrentGroup() {
         for (Group other_group : groups) {
             if (other_group != currentGroup) {
@@ -77,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         setGroupTransparency(currentGroup, 1);
+        textToSpeechGroup(currentGroup);
     }
 
     @Override
@@ -235,10 +242,14 @@ public class MainActivity extends AppCompatActivity {
 
                     if(!resultado[0].isEmpty()){
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                       textToSpeechEngine.speak(resultado[0], TextToSpeech.QUEUE_FLUSH, null, "tts1");
+                            textToSpeechEngine.speak(resultado[0], TextToSpeech.QUEUE_FLUSH, null, "tts1");
                         }
                     }
-                    
+
+                    for (Group group : groups) {
+                        group.txt.setText("");
+                    }
+
                     // Assign adapter to ListView
                     Q_res.setAdapter(adapter);
                     Toast.makeText(MainActivity.this,"Query Submitted",Toast.LENGTH_SHORT).show();
