@@ -229,14 +229,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v){
                 String asign = String.valueOf(txtAsignatura.getText());
                 String carr = String.valueOf(txtCarrera.getText());
+                String conv = String.valueOf(txtConvocatoria.getText());
                 asign = asign.toLowerCase();
                 carr = carr.toLowerCase();
+                conv = conv.toLowerCase();
                 try{
                     DataBaseAccess db = DataBaseAccess.getInstance(getBaseContext());
                     db.open();
                     String[] resultado = new String[1];
-                    resultado[0] = db.getDate(asign,carr);
-                    String test = db.getDate(asign, carr);
+                    resultado[0] = db.getDate(asign,carr,conv);
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
                             android.R.layout.simple_list_item_1,resultado);
 

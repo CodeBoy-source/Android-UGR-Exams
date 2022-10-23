@@ -67,10 +67,14 @@ public class DataBaseAccess {
         return str_a;
     }
 
-    public String getDate(String Asign, String Carr){
+    public String getDate(String Asign, String Carr, String Conv){
         Asign = getBestAsignMatch(Asign) ;
         Carr = getBestCarrMatch(Carr) ;
-        c = db.rawQuery("Select * from merged where lower(Tit)=? and lower(Nombre)=?", new String[]{Carr, Asign});
+        if(Fuzzy.LevenshteinDistance(Conv,"ordinaria")<=2)
+            Conv = "%Enero%";
+        else if(Fuzzy.LevenshteinDistance(Conv,"extraordinaria")<=3)
+            Conv = "%Febrero%";
+        c = db.rawQuery("Select * from merged where lower(Tit)=? and lower(Nombre)=? and Fecha like ?", new String[]{Carr, Asign,Conv});
         StringBuffer buffer = new StringBuffer();
         if(c.getCount()>0) {
             while (c.moveToNext()) {
