@@ -70,11 +70,17 @@ public class DataBaseAccess {
     public String getDate(String Asign, String Carr, String Conv){
         Asign = getBestAsignMatch(Asign) ;
         Carr = getBestCarrMatch(Carr) ;
-        if(Fuzzy.LevenshteinDistance(Conv,"ordinaria")<=2)
-            Conv = "%Enero%";
-        else if(Fuzzy.LevenshteinDistance(Conv,"extraordinaria")<=3)
-            Conv = "%Febrero%";
-        c = db.rawQuery("Select * from merged where lower(Tit)=? and lower(Nombre)=? and Fecha like ?", new String[]{Carr, Asign,Conv});
+        String conv_temp = "";
+        if(Fuzzy.LevenshteinDistance(Conv,"ordinaria")<=2) {
+            Conv = "%enero%";
+            conv_temp = "%junio%";
+        }
+        else if(Fuzzy.LevenshteinDistance(Conv,"extraordinaria")<=3) {
+            Conv = "%febrero%";
+            conv_temp = "%julio%";
+        }
+        c = db.rawQuery("Select * from merged where lower(Tit)=? and " +
+                "lower(Nombre)=? and (lower(Fecha) like ? or lower(Fecha) like ?)", new String[]{Carr, Asign,Conv,conv_temp});
         StringBuffer buffer = new StringBuffer();
         if(c.getCount()>0) {
             while (c.moveToNext()) {

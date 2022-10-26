@@ -3,6 +3,7 @@ package com.example.sqlprototype;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import android.speech.tts.TextToSpeech;
 
 
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     TextView lblCarrera, lblAsignatura, lblConvocatoria;
     Group currentGroup;
     Group[] groups;
-    ListView Q_res;
+    TextView Q_res;
     private TextToSpeech textToSpeechEngine;
     private Button ttsButton;
 
@@ -236,15 +238,14 @@ public class MainActivity extends AppCompatActivity {
                 try{
                     DataBaseAccess db = DataBaseAccess.getInstance(getBaseContext());
                     db.open();
-                    String[] resultado = new String[1];
-                    resultado[0] = db.getDate(asign,carr,conv);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
-                            android.R.layout.simple_list_item_1,resultado);
+                    String resultado = db.getDate(asign,carr,conv);
 
-                    if(!resultado[0].isEmpty()){
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            textToSpeechEngine.speak(resultado[0], TextToSpeech.QUEUE_FLUSH, null, "tts1");
-                        }
+                    String intro = "Tendrás el examen el";
+                    if(resultado.isEmpty()){
+                        intro = "Lo siento, no hemos encontrado ningún examen";
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        textToSpeechEngine.speak(intro + resultado, TextToSpeech.QUEUE_FLUSH, null, "tts1");
                     }
 
                     for (Group group : groups) {
@@ -252,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     // Assign adapter to ListView
-                    Q_res.setAdapter(adapter);
+                    Q_res.setText(intro + resultado);
                     Toast.makeText(MainActivity.this,"Query Submitted",Toast.LENGTH_SHORT).show();
                     db.close();
                 }
