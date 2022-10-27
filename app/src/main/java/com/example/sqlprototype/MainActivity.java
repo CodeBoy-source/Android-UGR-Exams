@@ -248,10 +248,6 @@ public class MainActivity extends AppCompatActivity {
                         textToSpeechEngine.speak(intro + resultado, TextToSpeech.QUEUE_FLUSH, null, "tts1");
                     }
 
-                    for (Group group : groups) {
-                        group.txt.setText("");
-                    }
-
                     // Assign adapter to ListView
                     Q_res.setText(intro + resultado);
                     Toast.makeText(MainActivity.this,"Query Submitted",Toast.LENGTH_SHORT).show();
