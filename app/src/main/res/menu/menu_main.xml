@@ -1,10 +1,20 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.sqlprototype.MainActivity">
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/menuHome"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="@string/home"
+        />
+    <item
+        android:id="@+id/menuDialog"
+        android:icon="@drawable/dialog"
+        android:title="@string/dialogFlow"
+        />
+
+    <item
+        android:id="@+id/mapa"
+        android:icon="@drawable/map"
+        android:title="@string/mapa"
+        />
 </menu>
