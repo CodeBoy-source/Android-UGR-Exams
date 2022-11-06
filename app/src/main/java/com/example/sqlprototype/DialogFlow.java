@@ -26,7 +26,7 @@ public class DialogFlow extends Fragment {
                         "    allow=\"microphone;\"\n" +
                         "    width=\"100%\"\n" +
                         "    height=\"100%\"\n" +
-                        "    src=\"https://console.dialogflow.com/api-client/demo/embedded/e3930d62-6d4d-4af5-ac14-80bd69a26d17\">\n" +
+                        "    src=\"https://console.dialogflow.com/api-client/demo/embedded/250ff287-26e6-4975-8bf9-d260c64754d1\">\n" +
                         "</iframe>";
         webview.loadData(html, "text/html", null);
 
