@@ -1,0 +1,96 @@
+QR en puntos de destino + checkpoints (puntos intermedios)
+
+Tenemos un grafo de los caminos entre los puntos de destino. Debemos hacer un algoritmo que sea capaz de hallar el camino desde cualquier QR hasta cualquier punto de destino.
+
+[APP]
+Pantalla inicial con un botón por cada punto de destino para decir a dónde queremos ir.
+Luego se activa la cámara para que escanee un QR que determinará el punto inicial.
+Calcula el camino y comienzan las instrucciones.
+Durante el viaje, necesitamos por cada transición entre cada punto del grafo en ambas direcciones:
+	- una foto
+	- instrucciones
+Supongamos que estamos en CHECKPOINT1 y el siguiente checkpoint es CHECKPOINT2 (ej ascensor planta baja -> ascensor planta 1). En la pantalla se muestra como título CHECKPOINT1 -> CHECKPOINT2, la foto y se dicen las instrucciones por voz. Si el usuario desliza el dedo o hace algo de multitouch, se mostrarán las instrucciones por texto. En cualquier momento el usuario puede hacer un gesto para activar la cámara y escanear un QR de un checkpoint. En ese momento se calculará el siguiente checkpoint que lleve al destino y se actualizarán las instrucciones y la foto. El checkpoint escaneado puede ser el esperado (CHECKPOINT2) o cualquier otro, en caso de que el usuario se haya perdido.
+
+Pensar cómo integrar sensores. Se me ocurre integrar brújula: en la pantalla de las instrucciones te pone una brújula con la dirección que tienes que seguir para ir de CHECKPOINT1 a CHECKPOINT2, y con la dirección a la que estás mirando en cada momento. Esto no será posible en cada arista (por ejemplo ascensor planta baja -> ascensor planta 1), pero sí cuando sea algo estilo recorrer un pasillo.
+
+
+[TAREAS]
+- Hacer el grafo con todos los checkpoints y puntos de destino
+- Hacer foto e instrucciones para cada arista del grafo en ambas direcciones
+- Hacer la base de datos
+- SALVADOR: Hacer en android una app de ejemplo que le des a un boton, te saque la camara, escanee un QR, te vuelva a la pantalla anterior y muestre el contenido del QR.
+
+Idea: pensar el grafo e implementarlo en python con networkx. igual podemos hallar automaticamente los caminos con eso, y generar las tablas desde ahi.
+
+
+[BASE DE DATOS]
+Tabla de pasos:
+	por cada arista, una entrada con [nodo1, nodo2, instrucciones, imagen]
+Tabla de rutas:
+	por cada arista, entradas con [nodo1, nodo2, destino]
+
+Estamos en nodo1, queremos ir a destino. Buscamos en la tabla de ruta el nodo2 que tenga nodo1 y destino. Ese es nuestro siguiente checkpoint. Buscamos en tabla de pasos la entrada con nodo1, nodo2. Ya tenemos las instrucciones.
+
+
+[puntos de destino]
+biblioteca
+cafeteria
+aula 3.5
+secretaria
+despacho marcelino: 3 planta despacho 21
+
+
+
+
+
+biblioteca <-> cafeteria
+	-hall biblioteca/taquillas
+	-ascensor edificio principal
+	-puerta patio edificio principal
+	-sala de estudio planta baja
+
+biblioteca <-> aula 3.5
+	-baños biblioteca
+	-ascensor edificio principal
+	-puerta patio edificio principal
+	-puerta edificio aulas
+	-ascensor planta baja
+	-ascensor 1 planta 
+	-ascensor 2 planta
+	-ascensor 3 planta
+	-aula 3.5
+	
+biblioteca <-> maquinas de vending
+	-baños biblioteca
+	-ascensor edificio principal
+	-puerta patio edificio principal
+	-puerta edificio aulas
+	-maquinas de vending
+
+biblioteca <-> secretaria
+	-baños biblioteca
+	-ascensor edificio principal
+	-hall secretaria
+	
+cafeteria <-> aula 3.5
+	-sala de estudio planta baja
+	-puerta patio edificio principal
+	-puerta edificio aulas
+	-ascensor planta baja
+	-ascensor 1 planta 
+	-ascensor 2 planta
+	-ascensor 3 planta
+	-aula 3.5
+
+cafeteria <-> maquinas de vending
+	
+
+
+aula 3.5 -> maquinas de vending:
+	- ascensor 3 planta
+	- ascensor 2 planta
+	- ascensor 1 planta
+	- ascensor planta baja
+	- maquinas de vending
+
+
