@@ -41,8 +41,10 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
-    HomeFragment homeFragment = new HomeFragment();
-    DialogFlow dialogFlow = new DialogFlow();
+    P2Fragment homeFragment = new P2Fragment();
+    GpsEtsiit gpsEtsiit = new GpsEtsiit();
+    P3Fragment dialogFlow = new P3Fragment();
+    RecordPattern recordPattern = new RecordPattern();
     public static final Integer RecordAudioRequestCode = 1;
 
     @Override
@@ -70,22 +72,22 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener(){
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item){
-                switch(item.getItemId()){
-                    case R.id.menuHome:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
-                        return true;
-                    case R.id.menuDialog:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container,dialogFlow).commit();
-                        return true;
-                    case R.id.mapa:
-                        Toast.makeText(getApplicationContext(),"[SORRY]: This is not implemented yet!",Toast.LENGTH_SHORT).show();
-                        return true;
-                }
-                return false;
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch(item.getItemId()){
+                case R.id.menuHome:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
+                    return true;
+                case R.id.menuDialog:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,dialogFlow).commit();
+                    return true;
+                case R.id.mapa:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,gpsEtsiit).commit();
+                    return true;
+                case R.id.pattern:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,recordPattern).commit();
+                    return true;
             }
+            return false;
         });
 
     }

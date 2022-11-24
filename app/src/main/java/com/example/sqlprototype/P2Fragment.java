@@ -37,7 +37,7 @@ class Group {
     }
 }
 
-public class HomeFragment extends Fragment {
+public class P2Fragment extends Fragment {
     View root;
 
     public static final Integer RecordAudioRequestCode = 1;
@@ -239,7 +239,7 @@ public class HomeFragment extends Fragment {
                 carr = carr.toLowerCase();
                 conv = conv.toLowerCase();
                 try{
-                    DataBaseAccess db = DataBaseAccess.getInstance(root.getContext());
+                    P2DataBaseAccess db = P2DataBaseAccess.getInstance(root.getContext());
                     db.open();
                     String resultado = db.getDate(asign,carr,conv);
 

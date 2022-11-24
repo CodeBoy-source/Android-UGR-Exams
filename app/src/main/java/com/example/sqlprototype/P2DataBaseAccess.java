@@ -10,25 +10,35 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 import java.lang.*;
 
 
-public class DataBaseAccess {
+public class P2DataBaseAccess {
     private static final String DATABASE_NAME="merged.db";
     private static final int DATABASE_VERSION=1;
     private SQLiteOpenHelper openHelper;
     private SQLiteDatabase db;
-    private static DataBaseAccess instance;
+    private static P2DataBaseAccess instance;
     Cursor c = null;
 
     // constructor
-    private DataBaseAccess(Context context){
+    private P2DataBaseAccess(Context context){
         this.openHelper = new SQLiteAssetHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.db = openHelper.getReadableDatabase();
     }
 
-    public static DataBaseAccess getInstance(Context context){
+    public static P2DataBaseAccess getInstance(Context context){
         if(instance==null){
-            instance = new DataBaseAccess(context);
+            instance = new P2DataBaseAccess(context);
         }
         return instance;
+    }
+
+    public void open() {
+        this.db = openHelper.getWritableDatabase();
+    }
+
+    public void close(){
+        if(this.db!=null){
+            this.db.close();
+        }
     }
 
     public String getBestCarrMatch(String str_a ){
