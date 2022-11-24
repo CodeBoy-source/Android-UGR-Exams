@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
-public class DialogFlow extends Fragment {
+public class P3Fragment extends Fragment {
 
     View root;
 

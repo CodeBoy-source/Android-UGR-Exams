@@ -4,10 +4,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
+
 import java.lang.*;
 
 
 public class DataBaseAccess {
+    private static final String DATABASE_NAME="merged.db";
+    private static final int DATABASE_VERSION=1;
     private SQLiteOpenHelper openHelper;
     private SQLiteDatabase db;
     private static DataBaseAccess instance;
@@ -15,7 +20,8 @@ public class DataBaseAccess {
 
     // constructor
     private DataBaseAccess(Context context){
-        this.openHelper = new DataBaseHelper(context);
+        this.openHelper = new SQLiteAssetHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.db = openHelper.getReadableDatabase();
     }
 
     public static DataBaseAccess getInstance(Context context){
@@ -23,16 +29,6 @@ public class DataBaseAccess {
             instance = new DataBaseAccess(context);
         }
         return instance;
-    }
-
-    public void open() {
-        this.db = openHelper.getWritableDatabase();
-    }
-
-    public void close(){
-        if(this.db!=null){
-            this.db.close();
-        }
     }
 
     public String getBestCarrMatch(String str_a ){
