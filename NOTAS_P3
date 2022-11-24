@@ -19,8 +19,12 @@ Pensar cómo integrar sensores. Se me ocurre integrar brújula: en la pantalla d
 - Hacer foto e instrucciones para cada arista del grafo en ambas direcciones
 - Hacer la base de datos
 - SALVADOR: Hacer en android una app de ejemplo que le des a un boton, te saque la camara, escanee un QR, te vuelva a la pantalla anterior y muestre el contenido del QR.
+- Multitouch
+- BRIAN: Gestos
 
 Idea: pensar el grafo e implementarlo en python con networkx. igual podemos hallar automaticamente los caminos con eso, y generar las tablas desde ahi.
+
+Idea: contar el numero de escalones se bajan al bajar escaleras. lo mismo al subir. igual asi podemos hacer algun QR opcional. pero de momento vamos a hacer lo de los QRs y ya veremos.
 
 
 [BASE DE DATOS]
@@ -30,6 +34,8 @@ Tabla de rutas:
 	por cada arista, entradas con [nodo1, nodo2, destino]
 
 Estamos en nodo1, queremos ir a destino. Buscamos en la tabla de ruta el nodo2 que tenga nodo1 y destino. Ese es nuestro siguiente checkpoint. Buscamos en tabla de pasos la entrada con nodo1, nodo2. Ya tenemos las instrucciones.
+
+SELECT instrucciones, imagen FROM pasos WHERE nodo1=$nodo1, nodo2 = SELECT nodo2 FROM rutas WHERE nodo1=$nodo1, destino=$destino;
 
 
 [puntos de destino]

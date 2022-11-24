@@ -1,0 +1,268 @@
+[puntos de destino]
+DESTINO 1: biblioteca
+DESTINO 2: cafeteria
+DESTINO 3: aula 3.5
+DESTINO 4: secretaria
+DESTINO 5: despacho marcelino: 3 planta despacho 21
+
+[checkpoints]
+-CHECKPOINT 1: Fuente de agua biblioteca
+-CHECKPOINT 2: ascensor edificio principal
+-CHECKPOINT 3: puerta patio edificio principal
+-CHECKPOINT 4: sala de estudio planta baja
+-CHECKPOINT 5: puerta edificio aulas
+-CHECKPOINT 6: ascensor planta baja
+-CHECKPOINT 7: ascensor 1 planta 
+-CHECKPOINT 8: ascensor 2 planta
+-CHECKPOINT 9: ascensor 3 planta
+-CHECKPOINT 10: hall secretaria
+-CHECKPOINT 11: escaleras emergencia 3 planta	
+
+[rutas]
+-RUTA 1: DESTINO 1 <-> DESTINO 2: CHECKPOINT 1 - CHECKPOINT 2 - CHECKPOINT 3 - CHECKPOINT 4
+-RUTA 2: DESTINO 1 <-> DESTINO 3: CHECKPOINT 1 - CHECKPOINT 2 - CHECKPOINT 3 - CHECKPOINT 5 - CHECKPOINT 6 -CHECKPOINT 7 -CHECKPOINT 8 - CHECKPOINT 9
+-RUTA 3: DESTINO 1 <-> DESTINO 4: CHECKPOINT 1 - CHECKPOINT 2 - CHECKPOINT 10
+-RUTA 4: DESTINO 1 <-> DESTINO 5: CHECKPOINT 1 - CHECKPOINT 2 - CHECKPOINT 3 - CHECKPOINT 5 - CHECKPOINT 6 - CHECKPOINT 7 -CHECKPOINT 8 - CHECKPOINT 9 - CHECKPOINT 11
+-RUTA 5: DESTINO 2 <-> DESTINO 3: CHECKPOINT 4 - CHECKPOINT 3 - CHECKPOINT 5 - CHECKPOINT 6 - CHECKPOINT 7 -CHECKPOINT 8 - CHECKPOINT 9
+-RUTA 6: DESTINO 2 <-> DESTINO 4: CHECKPOINT 4 - CHECKPOINT 3 - CHECKPOINT 10
+-RUTA 7: DESTINO 2 <-> DESTINO 5: CHECKPOINT 4 - CHECKPOINT 3 - CHECKPOINT 5 - CHECKPOINT 6 - CHECKPOINT 7 - CHECKPOINT 8 - CHECKPOINT 9 - CHECKPOINT 11
+-RUTA 8: DESTINO 3 <-> DESTINO 4: CHECKPOINT 9 - CHECKPOINT 8 - CHECKPOINT 7 - CHECKPOINT 6 - CHECKPOINT 5 - CHECKPOINT 3 - CHECKPOINT 10
+-RUTA 9: DESTINO 3 <-> DESTINO 5: CHECKPOINT 11
+-RUTA 10: DESTINO 4 <-> DESTINO 5: CHECKPOINT 10 - CHECKPOINT 3 - CHECKPOINT 5 - CHECKPOINT 6 - CHECKPOINT 7 - CHECKPOINT 8 - CHECKPOINT 9 - CHECKPOINT 11
+	
+[aristas]
+-ARISTA A: DESTINO 1 <-> CHECKPOINT 1: 		DESTINO 1 -> CHECKPOINT 1
+											Salga por la puerta principal de la biblioteca, camine recto hasta llegar a la pared, 
+											gire a la izquierda 90 grados, camine recto hasta encontrarse la fuente de agua.
+											CHECKPOINT 1 -> DESTINO 1
+											Situese de cara a la fuente, gire 90 grados a la derecha, camine recto hasta que la puerta de la biblioteca 
+											se encuentre a su derecha, gire 90 grados a la derecha, camine recto hasta encontrarse enfrente de la puerta.
+
+-ARISTA B: CHECKPOINT 1 <-> CHECKPOINT 2:	CHECKPOINT 1 -> CHECKPOINT 2	
+											Situese de espaldas a la fuente y camine recto hacia las escaleras de bajada, baje las escaleras hasta llegar
+											a la planta 0. Cuando llegue al final de las escaleras gire 90 grados, camine en linea recta hasta salir por 
+											la puerta que esta enfrente suya. Cuando salga gire 90 grados a la derecha y camine recto hasta 
+											tener el ascensor a su derecha.
+											CHECKPOINT 2 -> CHECKPOINT 1
+											Situese de manera que la puerta del ascensor quede a su izquierda, camine recto hasta que pueda realizar un
+											giro de 90 grados a la izquierda, cuando realice el giro a la izquierda, camine recto hasta encontrarse
+											con las escaleras de subida, suba las escaleras hasta la primera planta, camine recto hasta encontrarse 
+											con la fuente.
+							
+-ARISTA C: CHECKPOINT 2 <-> CHECKPOINT 3:	CHECKPOINT 2 -> CHECKPOINT 3
+											Situese de manera que la puerta del ascensor quede a su derecha, camine recto hasta que a su derecha haya
+											un pasillo, gire 45 grados a la derecha, camine recto hasta encontrarse con la puerta de salida del patio.
+											CHECKPOINT 3 -> CHECKPOINT 2
+											Situese de espaldas a la puerta principal, gire 45 grados a la izquierda y camine recto hasta llegar 
+											al final de la pared de la izquierda, cuando esto ocurra gire otros 45 grados a la izquierda y camine recto
+											hasta que la puerta del ascensor se encuentre a su izquierda.
+
+-ARISTA D: CHECKPOINT 3 <-> CHECKPOINT 4: 	CHECKPOINT 3 -> CHECKPOINT 4
+											Situese de espaldas a la puerta principal, gire 90 grados a la izquierda y camine recto hasta llegar al
+											inicio de las escaleras de bajada, baje las escaleras hasta la planta - 0 y a su izquierda se encuentra la 
+											puerta del aula de estudio.
+											CHECKPOINT 4 -> CHECKPOINT 3
+											Situese de espaldas a la puerta del aula de estudio. Gire a la derecha para subir las escaleras. Suba las
+											escaleras hasta la planta 0 y a la derecha se encuentra la puerta de salida.
+
+-ARISTA E: CHECKPOINT 4 <-> DESTINO 2: 		CHECKPOINT 4 -> DESTINO 2
+											Situese de espaldas a la puerta del aula de estudio. Camine recto y gire a la izquierda en dirección a 
+											la puerta de la cafeteria. 
+											DESTINO 2 -> CHECKPOINT 4
+											Situese de espaldas a la puerta de la cafeteria camine recto, hasta que la puerta del aula de estudios se 
+											encuentre a su derecha, cuando esto pase gire a su derecha y camine recto hasta la puerta.
+
+-ARISTA F: CHECKPOINT 3 <-> CHECKPOINT 5: 	CHECKPOINT 3 -> CHECKPOINT 5
+											Salga por la puerta del edificio principal al exterior, camine recto un par de pasos, gire a la izquierda 90 
+											grados y camine recto hasta llegar a la puerta del edificio de aulas.
+											CHECKPOINT 5 -> CHECKPOINT 3
+											Situese de espaldas a la puerta del edificio de aulas, camine recto, hasta que la puerta del edificio 
+											principal se encuentre a su derecha, cuando esto ocurra gire a la derecha y camine recto hasta la puerta.
+				
+-ARISTA G: CHECKPOINT 5 <-> CHECKPOINT 6: 	CHECKPOINT 5 -> CHECKPOINT 6
+											Entre al edificio y camine recto hasta que le sea posible realizar un giro de 90 grados a la derecha para 
+											continuar por el pasillo, camine recto hasta que a su derecha se encuentre la puerta del ascensor de la planta 0.
+											CHECKPOINT 6 -> CHECKPOINT 5
+											Situese de espaldas a la puerta del ascensor, gire a la izquierda 90 grados, camine recto hasta que vea a 
+											su izquierda la puerta de entrada de las aulas, cuando esto ocurra, gire a la izquierda, camine recto y salga
+											por la puerta.
+									
+-ARISTA H: CHECKPOINT 6 <-> CHECKPOINT 7:	CHECKPOINT 6 -> CHECKPOINT 7
+											Situese enfrente de las escaleras de subida, suba las escaleras hasta la primera planta, luego gire a la derecha
+											y camine recto hasta que la puerta del ascensor se encuentre a su izquierda.								
+											CHECKPOINT 7 -> CHECKPOINT 6
+											Situese de espaldas a la puerta del ascensor, gire a la derecha y camine recto hasta que las escaleras de 
+											bajada se encuentren a su izquierda, baje las escaleras hasta la planta 0 y camine recto hasta que se 
+											encuentre con la puerta del ascensor
+								
+-ARISTA I: CHECKPOINT 7 <-> CHECKPOINT 8:	CHECKPOINT 7 -> CHECKPOINT 8
+											Situese enfrente de las escaleras de subida, suba las escaleras hasta la segunda planta, luego gire a la 
+											derecha y camine recto hasta que la puerta del ascensor se encuentre a su izquierda.								
+											CHECKPOINT 8 -> CHECKPOINT 7
+											Situese de espaldas a la puerta del ascensor, gire a la derecha y camine recto hasta que las escaleras de 
+											bajada se encuentren a su izquierda, baje las escaleras hasta la primera planta y camine recto hasta que se 
+											encuentre con la puerta del ascensor				
+
+-ARISTA J: CHECKPOINT 8 <-> CHECKPOINT 9:	CHECKPOINT 8 -> CHECKPOINT 9
+											Situese enfrente de las escaleras de subida, suba las escaleras hasta la tercera planta, luego gire a la 
+											derecha y camine recto hasta que la puerta del ascensor se encuentre a su izquierda.								
+											CHECKPOINT 9 -> CHECKPOINT 8
+											Situese de espaldas a la puerta del ascensor, gire a la derecha y camine recto hasta que las escaleras de 
+											bajada se encuentren a su izquierda, baje las escaleras hasta la segunda planta y camine recto hasta que se 
+											encuentre con la puerta del ascensor
+										
+-ARISTA K: CHECKPOINT 9 <-> DESTINO 3:		CHECKPOINT 9 -> DESTINO 3
+											Situese manera que la puerta del ascensor se encuentre a su izquierda, camine recto hasta que se encuentre a
+											su derecha la puerta del aula 3.5, entre por la puerta de dicha aula.
+											DESTINO 3 -> CHECKPOINT 9
+											Salga del aula y gire a la izquierda 90 grados, camine recto hasta que se encuentre a su derecha la puerta del
+											ascensor.
+
+-ARISTA L: CHECKPOINT 2 <-> CHECKPOINT 10: 	CHECKPOINT 2 -> CHECKPOINT 10
+											Situese de manera que la puerta del ascensor quede a su izquierda, camine recto hasta que pase entre las 
+											columnas que le llevan al hall de secretaria.
+											CHECKPOINT 10 -> CHECKPOINT 2
+											Situese de manera que la puerta de secretaria quede a su espalda y la puerta de salida al exterior este 
+											enfrente suya, camine recto hasta que a su izquierda este la puerta del ascensor.
+										
+-ARISTA M: CHECKPOINT 10 <-> DESTINO 4: 	CHECKPOINT 10 -> DESTINO 4
+											Situese de manera que la puerta de secretaria quede enfrente suya y la puerta de salida al exterior a 
+											sus espaldas, camine recto hasta encontrarse con la puerta de entrada a secretaria.
+											CHECKPOINT 10 -> CHECKPOINT 2
+											Situese de manera que la puerta de secretaria quede a su espalda y la puerta de salida al exterior este 
+											enfrente suya, avance hasta estar en medio del hall.
+
+-ARISTA N: CHECKPOINT 9 <-> CHECKPOINT 11: 	CHECKPOINT 9 -> CHECKPOINT 11
+											Situese manera que la puerta del ascensor se encuentre a su izquierda, camine recto hasta que se encuentre a
+											su izquierda la puerta de salida a las escaleras de emergencia, gire a la izquierda y salga al exterior.
+											CHECKPOINT 11 -> CHECKPOINT 9
+											Entre al edificio de las aulas, gire a la derecha 90 grados y camine recto hasta que a su derecha se 
+											encuentre la puerta del ascensor.
+									
+-ARISTA O: CHECKPOINT 11 <-> DESTINO 5: 	CHECKPOINT 11 -> DESTINO 5
+											Situese de manera que la puerta de entrada al edificio principal quede enfrente suya y la puerta de entrada 
+											al edificio de aulas se encuentre a su espalda, entre por la puerta del edificio principal y camine recto 
+											hasta encontrar el despacho 21
+											DESTINO 5 -> CHECKPOINT 11
+											Salga del despacho y situese en dirección a las escaleras de emergencia, camine recto y salga al exterior.
+										
+-ARISTA P: CHECKPOINT 11 <-> DESTINO 3: 	CHECKPOINT 11 -> DESTINO 3
+											Salga del aula y gire a la derecha 90 grados, camine recto hasta que se encuentre a 
+											su izquierda la puerta de salida a las escaleras de emergencia, gire a la izquierda y salga al exterior.
+											DESTINO 3 -> CHECKPOINT 11
+											Entre al edificio de las aulas, gire a la derecha 90 grados y camine recto hasta que a su izquierda se 
+											encuentre el aula 3.5
+
+
+									
+
+NOTAS: 	- No se si el despacho de marcelino esta a la izquierda o a la derecha
+		- Por comodidad me he saltado la Ñ
+										
+
+RUTA 1: DESTINO 1: biblioteca <-> DESTINO 2: cafeteria
+	-DESTINO 1: biblioteca
+	-CHECKPOINT 1: Fuente de agua biblioteca
+	-CHECKPOINT 2: ascensor edificio principal
+	-CHECKPOINT 3: puerta patio edificio principal
+	-CHECKPOINT 4: sala de estudio planta baja
+	-DESTINO 2: cafeteria
+
+RUTA 2: DESTINO 1: biblioteca <-> DESTINO 3: aula 3.5
+	-DESTINO 1: biblioteca
+	-CHECKPOINT 1: Fuente de agua biblioteca
+	-CHECKPOINT 2: ascensor edificio principal
+	-CHECKPOINT 3: puerta patio edificio principal
+	-CHECKPOINT 5: puerta edificio aulas
+	-CHECKPOINT 6: ascensor planta baja
+	-CHECKPOINT 7: ascensor 1 planta 
+	-CHECKPOINT 8: ascensor 2 planta
+	-CHECKPOINT 9: ascensor 3 planta
+	-DESTINO 3: aula 3.5
+	
+RUTA 3: DESTINO 1: biblioteca <-> DESTINO 4: secretaria
+	-DESTINO 1: biblioteca
+	-CHECKPOINT 1: Fuente de agua biblioteca
+	-CHECKPOINT 2: ascensor edificio principal
+	-CHECKPOINT 10: hall secretaria
+	-DESTINO 4: secretaria
+	
+RUTA 4: DESTINO 1: biblioteca <-> DESTINO 5: despacho marcelino: 3 planta despacho 21
+	-DESTINO 1: biblioteca
+	-CHECKPOINT 1: Fuente de agua biblioteca
+	-CHECKPOINT 2: ascensor edificio principal
+	-CHECKPOINT 3: puerta patio edificio principal
+	-CHECKPOINT 5: puerta edificio aulas
+	-CHECKPOINT 6: ascensor planta baja
+	-CHECKPOINT 7: ascensor 1 planta 
+	-CHECKPOINT 8: ascensor 2 planta
+	-CHECKPOINT 9: ascensor 3 planta
+	-CHECKPOINT 11: escaleras emergencia 3 planta	
+	-DESTINO 5: despacho marcelino
+	
+RUTA 5: DESTINO 2: cafeteria <-> DESTINO 3: aula 3.5
+	-DESTINO 2: cafeteria
+	-CHECKPOINT 4: sala de estudio planta baja
+	-CHECKPOINT 3: puerta patio edificio principal
+	-CHECKPOINT 5: puerta edificio aulas
+	-CHECKPOINT 6: ascensor planta baja
+	-CHECKPOINT 7: ascensor 1 planta 
+	-CHECKPOINT 8: ascensor 2 planta
+	-CHECKPOINT 9: ascensor 3 planta
+	-DESTINO 3: aula 3.5
+
+RUTA 6: DESTINO 2: cafeteria <-> DESTINO 4: secretaria
+	-DESTINO 2: cafeteria
+	-CHECKPOINT 4: sala de estudio planta baja
+	-CHECKPOINT 3: puerta patio edificio principal
+	-CHECKPOINT 10: hall secretaria
+	-DESTINO 4: secretaria
+	
+RUTA 7: DESTINO 2: cafeteria <-> DESTINO 5: despacho marcelino
+	-DESTINO 2: cafeteria
+	-CHECKPOINT 4: sala de estudio planta baja
+	-CHECKPOINT 3: puerta patio edificio principal
+	-CHECKPOINT 5: puerta edificio aulas
+	-CHECKPOINT 6: ascensor planta baja
+	-CHECKPOINT 7: ascensor 1 planta 
+	-CHECKPOINT 8: ascensor 2 planta
+	-CHECKPOINT 9: ascensor 3 planta
+	-CHECKPOINT 11: escaleras emergencia 3 planta	
+	-DESTINO 5: despacho marcelino
+	
+RUTA 8: DESTINO 3: aula 3.5 <-> DESTINO 4: secretaria
+	-DESTINO 3: aula 3.5
+	-CHECKPOINT 9: ascensor 3 planta
+	-CHECKPOINT 8: ascensor 2 planta
+	-CHECKPOINT 7: ascensor 1 planta 
+	-CHECKPOINT 6: ascensor planta baja
+	-CHECKPOINT 5: puerta edificio aulas
+	-CHECKPOINT 3: puerta patio edificio principal
+	-CHECKPOINT 10: hall secretaria
+	-DESTINO 4: secretaria
+
+RUTA 9: DESTINO 3: aula 3.5 <-> DESTINO 5: despacho marcelino
+	-DESTINO 3: aula 3.5
+	-CHECKPOINT 11: escaleras emergencia 3 planta	
+	-DESTINO 5: despacho marcelino
+
+RUTA 10: DESTINO 4: secretaria <-> DESTINO 5: despacho marcelino
+	-DESTINO 4: secretaria
+	-CHECKPOINT 10: hall secretaria
+	-CHECKPOINT 3: puerta patio edificio principal
+	-CHECKPOINT 5: puerta edificio aulas
+	-CHECKPOINT 6: ascensor planta baja
+	-CHECKPOINT 7: ascensor 1 planta 
+	-CHECKPOINT 8: ascensor 2 planta
+	-CHECKPOINT 9: ascensor 3 planta
+	-CHECKPOINT 11: escaleras emergencia 3 planta	
+	-DESTINO 5: despacho marcelino
+	
+	
+	
+	
+
+
+
+
+
