@@ -1,5 +1,8 @@
 package com.example.sqlprototype;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
@@ -7,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -47,6 +51,13 @@ public class MainActivity extends AppCompatActivity {
     RecordPattern recordPattern = new RecordPattern();
     public static final Integer RecordAudioRequestCode = 1;
 
+
+    private void checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, RecordAudioRequestCode);
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -54,11 +65,14 @@ public class MainActivity extends AppCompatActivity {
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 Toast.makeText(this,"Permission Granted",Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void checkPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.RECORD_AUDIO},RecordAudioRequestCode);
+        if (requestCode == 2296) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (Environment.isExternalStorageManager()) {
+                    // Nothing for now.
+                } else {
+                    Toast.makeText(this, "[WARNING]: ALLOW permission for storage access!", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 
@@ -68,6 +82,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             checkPermission();
+        }
+
+        String[] permissionsStorage = {Manifest.permission.MANAGE_EXTERNAL_STORAGE};
+        int requestExternalStorage = 1;
+        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE);
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, permissionsStorage, requestExternalStorage);
         }
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
