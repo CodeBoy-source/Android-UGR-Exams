@@ -18,11 +18,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 
 public class RecordPattern extends Fragment implements SensorEventListener {
 
@@ -34,6 +32,8 @@ public class RecordPattern extends Fragment implements SensorEventListener {
     FileWriter accwriter,gyrowriter;
     File accfile, gyrofile;
 
+    public int index = 0;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,6 +41,7 @@ public class RecordPattern extends Fragment implements SensorEventListener {
         rootView = inflater.inflate(R.layout.fragment_record_pattern, container, false);
         Button start = (Button) rootView.findViewById(R.id.recordstart);
         Button stop = (Button) rootView.findViewById(R.id.recordstop);
+        Button reset = (Button) rootView.findViewById(R.id.reset);
         coordX = (TextView)rootView.findViewById(R.id.coordX);
         coordY = (TextView)rootView.findViewById(R.id.coordY);
         coordZ = (TextView)rootView.findViewById(R.id.coordZ);
@@ -49,22 +50,9 @@ public class RecordPattern extends Fragment implements SensorEventListener {
         coordYRoll = (TextView)rootView.findViewById(R.id.coordYRoll);
         coordZYaw = (TextView)rootView.findViewById(R.id.coordZYaw);
 
-        stop.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                record = false;
-            }
-        });
-
-        //eksekusi saat klik button start
-        start.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                record = true;
-            }
-        });
+        stop.setOnClickListener(v -> record = false);
+        start.setOnClickListener(v -> record = true);
+        reset.setOnClickListener(v -> createFiles());
         return rootView;
     }
 
@@ -76,18 +64,22 @@ public class RecordPattern extends Fragment implements SensorEventListener {
                 root.mkdirs();
             }
             this.accfile = new File(root, "accpatt.txt");
+            if(accfile.exists())
+                accfile.delete();
             this.accfile.createNewFile();
             this.accfile.setWritable(true);
             this.gyrofile = new File(root,"gyropatt.txt");
+            if(gyrofile.exists())
+                gyrofile.delete();
             this.gyrofile.createNewFile();
             this.gyrofile.setWritable(true);
             if(accfile.canWrite() && gyrofile.canWrite()) {
                 this.accwriter = new FileWriter(accfile);
                 this.gyrowriter = new FileWriter(gyrofile);
-                Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "DIRECTORY READY", Toast.LENGTH_SHORT).show();
                 this.filecreated = true;
             }else {
-                Toast.makeText(getContext(), "UNABLE TO CREATE FILE", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "UNABLE TO CREATE DIRECTORY/FILE", Toast.LENGTH_SHORT).show();
                 this.filecreated = false;
             }
         }
@@ -126,7 +118,6 @@ public class RecordPattern extends Fragment implements SensorEventListener {
         if(event.sensor.getType()==Sensor.TYPE_ACCELEROMETER)
         {
 
-            //assign directions accelometer
             float x = event.values[0];
             float y = event.values[1];
             float z = event.values[2];

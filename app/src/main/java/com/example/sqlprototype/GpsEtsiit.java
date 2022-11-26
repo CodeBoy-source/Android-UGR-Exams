@@ -1,8 +1,14 @@
 package com.example.sqlprototype;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -10,13 +16,47 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-public class GpsEtsiit extends Fragment {
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+public class GpsEtsiit extends Fragment implements SensorEventListener {
 
     View root;
 
     public boolean mode;
     public float p1StartY,p1StopY,p2StartY,p2StopY;
     public float DOUBLE_SWIPE_THRESHOLD = 0.5f;
+
+    SensorManager sensorManager;
+    Sensor sensor, sensorgyroscope;
+
+    public static float THRESHOLD_Z = 10f;
+    public static float THRESHOLD_Y = 10f;
+    public float EPSILON_Z = 3f;
+    public float EPSILON_Y = 3f;
+    public boolean first_read = false;
+    public float FCX, FCY, FCZ;
+    public int SIGNY;
+    public static boolean is_running = false;
+    private static int count = 0;
+    private ScheduledExecutorService executorService;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        FragmentActivity parent = getActivity();
+
+        sensorManager = (SensorManager) parent.getSystemService(Context.SENSOR_SERVICE);
+        sensor = sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
+        sensorgyroscope = sensorManager.getSensorList(Sensor.TYPE_GYROSCOPE).get(0);
+
+        sensorManager=(SensorManager) parent.getSystemService(Context.SENSOR_SERVICE);
+        //add listener for accelerometer
+        sensorManager.registerListener(this,sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),SensorManager.SENSOR_DELAY_FASTEST);
+        //add listener for gyroscope
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_FASTEST);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,5 +120,64 @@ public class GpsEtsiit extends Fragment {
 
     public void doubleSwipeDown(){
         Toast.makeText(getContext(),"SWIPE DOWN",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if(event.sensor.getType()==Sensor.TYPE_ACCELEROMETER)
+        {
+
+            if(!first_read) {
+               FCX = event.values[0];
+               FCY = event.values[1];
+               FCZ = event.values[2];
+               SIGNY = Integer.signum((int)FCY);
+                first_read = true;
+            }
+
+            float y = event.values[1];
+            float z = event.values[2];
+            float diff_y = Math.abs(FCY - THRESHOLD_Y);
+            float diff_z = Math.abs(FCZ - THRESHOLD_Z);
+            boolean upd_y, upd_z;
+            if(THRESHOLD_Y!=0){
+                upd_y = Math.abs(y - diff_y) <= EPSILON_Y;
+                upd_z = z + diff_z <= EPSILON_Z;
+            }else{
+               upd_y = Math.abs(y - FCY) <= EPSILON_Y;
+               upd_z = Math.abs(z - FCZ) <= EPSILON_Z;
+            }
+            System.out.println(upd_y + " -- " + upd_z + " -- " + is_running + " -- " + count + " -- " + THRESHOLD_Y);
+            if(upd_y && upd_z){
+                if(is_running && count>=2){
+                    is_running = false;
+                    count += 1;
+                    Toast.makeText(getContext(),"PATTERN READ",Toast.LENGTH_SHORT).show();
+                }else{
+                    THRESHOLD_Z -= 10f;
+                    THRESHOLD_Y -= 10f;
+                    THRESHOLD_Y = Math.abs(THRESHOLD_Y);
+                    THRESHOLD_Y = Math.abs(THRESHOLD_Z);
+                    count += 1;
+                    if(!is_running) {
+                        executorService = Executors.newSingleThreadScheduledExecutor();
+                        executorService.schedule(GpsEtsiit::ResetPattern, 3, TimeUnit.SECONDS);
+                    }
+                    is_running = true;
+                }
+            }
+        }
+    }
+
+    public static void ResetPattern(){
+        is_running = false;
+        THRESHOLD_Y = 10f;
+        THRESHOLD_Z = 10f;
+        count = 0;
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }

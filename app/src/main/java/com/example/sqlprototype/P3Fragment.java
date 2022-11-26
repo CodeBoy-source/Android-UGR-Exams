@@ -20,7 +20,7 @@ public class P3Fragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_dialog_flow, container, false);
 
         WebView webview = root.findViewById(R.id.webview);
-        webview.getSettings().setJavaScriptEnabled(true);
+        // webview.getSettings().setJavaScriptEnabled(true);
         String html =
                 "<iframe\n" +
                         "    allow=\"microphone;\"\n" +
