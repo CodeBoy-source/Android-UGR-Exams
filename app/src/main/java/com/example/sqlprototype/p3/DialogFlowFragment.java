@@ -1,4 +1,4 @@
-package com.example.sqlprototype;
+package com.example.sqlprototype.p3;
 
 import android.os.Bundle;
 
@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
-public class P3Fragment extends Fragment {
+import com.example.sqlprototype.R;
+
+public class DialogFlowFragment extends Fragment {
 
     View root;
 

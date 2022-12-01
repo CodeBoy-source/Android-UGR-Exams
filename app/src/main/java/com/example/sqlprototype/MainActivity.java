@@ -1,53 +1,31 @@
 package com.example.sqlprototype;
 
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-
 import android.Manifest;
-import android.app.Dialog;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.speech.RecognitionListener;
-import android.speech.RecognizerIntent;
-import android.speech.SpeechRecognizer;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.speech.tts.TextToSpeech;
 
 
-import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.sqlprototype.p2.HomeFragment;
+import com.example.sqlprototype.p3.DialogFlowFragment;
+import com.example.sqlprototype.p4.GpsEtsiitHomeFragment;
+import com.example.sqlprototype.p4.RecordPattern;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
-
-import java.util.ArrayList;
-import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
-    P2Fragment homeFragment = new P2Fragment();
-    GpsEtsiit gpsEtsiit = new GpsEtsiit();
-    P3Fragment dialogFlow = new P3Fragment();
+    HomeFragment homeFragment = new HomeFragment();
+    GpsEtsiitHomeFragment gpsEtsiitHomeFragment = new GpsEtsiitHomeFragment();
+    DialogFlowFragment dialogFlow = new DialogFlowFragment();
     RecordPattern recordPattern = new RecordPattern();
     public static final Integer RecordAudioRequestCode = 1;
 
@@ -102,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,dialogFlow).commit();
                     return true;
                 case R.id.mapa:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container,gpsEtsiit).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, gpsEtsiitHomeFragment).commit();
                     return true;
                 case R.id.pattern:
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,recordPattern).commit();

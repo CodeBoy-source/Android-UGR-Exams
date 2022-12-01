@@ -1,4 +1,4 @@
-package com.example.sqlprototype;
+package com.example.sqlprototype.p2;
 
 import android.content.Intent;
 import android.os.Build;
@@ -22,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.speech.tts.TextToSpeech;
 
+import com.example.sqlprototype.R;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -37,7 +39,7 @@ class Group {
     }
 }
 
-public class P2Fragment extends Fragment {
+public class HomeFragment extends Fragment {
     View root;
 
     public static final Integer RecordAudioRequestCode = 1;
@@ -239,7 +241,7 @@ public class P2Fragment extends Fragment {
                 carr = carr.toLowerCase();
                 conv = conv.toLowerCase();
                 try{
-                    P2DataBaseAccess db = P2DataBaseAccess.getInstance(root.getContext());
+                    DataBaseAccess db = DataBaseAccess.getInstance(root.getContext());
                     db.open();
                     String resultado = db.getDate(asign,carr,conv);
 

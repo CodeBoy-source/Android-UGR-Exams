@@ -1,32 +1,33 @@
-package com.example.sqlprototype;
+package com.example.sqlprototype.p2;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.sqlprototype.Fuzzy;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.lang.*;
 
 
-public class P2DataBaseAccess {
+public class DataBaseAccess {
     private static final String DATABASE_NAME="merged.db";
     private static final int DATABASE_VERSION=1;
     private SQLiteOpenHelper openHelper;
     private SQLiteDatabase db;
-    private static P2DataBaseAccess instance;
+    private static DataBaseAccess instance;
     Cursor c = null;
 
     // constructor
-    private P2DataBaseAccess(Context context){
+    private DataBaseAccess(Context context){
         this.openHelper = new SQLiteAssetHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.db = openHelper.getReadableDatabase();
     }
 
-    public static P2DataBaseAccess getInstance(Context context){
+    public static DataBaseAccess getInstance(Context context){
         if(instance==null){
-            instance = new P2DataBaseAccess(context);
+            instance = new DataBaseAccess(context);
         }
         return instance;
     }

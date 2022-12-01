@@ -1,4 +1,4 @@
-package com.example.sqlprototype;
+package com.example.sqlprototype.p4;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.sqlprototype.R;
 
 import java.io.File;
 import java.io.FileWriter;
