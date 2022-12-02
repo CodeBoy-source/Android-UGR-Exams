@@ -1,48 +1,32 @@
 package com.example.sqlprototype;
 
 import android.Manifest;
-import android.app.Dialog;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.speech.RecognitionListener;
-import android.speech.RecognizerIntent;
-import android.speech.SpeechRecognizer;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.speech.tts.TextToSpeech;
 
 
-import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.sqlprototype.p2.HomeFragment;
+import com.example.sqlprototype.p3.DialogFlowFragment;
+import com.example.sqlprototype.p4.GpsEtsiitHomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-
-import java.util.ArrayList;
-import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     HomeFragment homeFragment = new HomeFragment();
-    DialogFlow dialogFlow = new DialogFlow();
+    DialogFlowFragment dialogFlowFragment = new DialogFlowFragment();
+    GpsEtsiitHomeFragment gpsEtsiitHomeFragment = new GpsEtsiitHomeFragment();
+
     public static final Integer RecordAudioRequestCode = 1;
 
     @Override
@@ -69,19 +53,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener(){
             @Override
             public boolean onNavigationItemSelected(MenuItem item){
                 switch(item.getItemId()){
                     case R.id.menuHome:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
                         return true;
                     case R.id.menuDialog:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container,dialogFlow).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, dialogFlowFragment).commit();
                         return true;
                     case R.id.mapa:
-                        Toast.makeText(getApplicationContext(),"[SORRY]: This is not implemented yet!",Toast.LENGTH_SHORT).show();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, gpsEtsiitHomeFragment).commit();
                         return true;
                 }
                 return false;

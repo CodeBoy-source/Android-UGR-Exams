@@ -1,4 +1,5 @@
 import networkx
+import shutil
 
 CHECKPOINTS = [
 	"fuente de agua biblioteca",
@@ -114,15 +115,25 @@ with open("rutas.csv", "w") as f:
 	writer.writerow(["nodo1", "nodo2", "destino"])
 	writer.writerows(tabla_rutas)
 
-with open("instrucciones.csv","w") as f:
+with open("instrucciones.csv", "w") as f:
 	writer = csv.writer(f)
 	writer.writerow(["nodo1", "nodo2", "instrucciones", "imagen"])
 	writer.writerows(TABLA_INSTRUCCIONES)
 
+nodos = [(n, data["name"]) for n, data in g.nodes.items()]
+with open("nodos.csv", "w") as f:
+	writer = csv.writer(f)
+	writer.writerow(["nodo", "nombre"])
+	writer.writerows(nodos)
 
-edges = list(g.edges).copy()
-edges.extend([tuple(reversed(edge)) for edge in edges])
-print("\n".join([str(edge) for edge in edges]))
+for elem in TABLA_INSTRUCCIONES:
+	key2 = elem[3].split("/")[1]
+	key = key2.replace("imgnodo_", "").replace("_", ", ")
+	key2 = key2.replace("-", "m")
+	print("m.put(new Pair<>(" + key + "), R.drawable." + key2 + ");")
+	shutil.copyfile("/home/david/Escritorio/NPI/NPI-P3/app/src/main/res/drawable/logougr2.png",
+	                "/home/david/Escritorio/NPI/NPI-P3/app/src/main/res/drawable/" + key2 + ".png")
+
 
 # a = networkx.nx_agraph.to_agraph(g)
 # a.layout("dot")

@@ -28,14 +28,23 @@ Idea: contar el numero de escalones se bajan al bajar escaleras. lo mismo al sub
 
 
 [BASE DE DATOS]
-Tabla de pasos:
+Tabla de instrucciones:
 	por cada arista, una entrada con [nodo1, nodo2, instrucciones, imagen]
 Tabla de rutas:
 	por cada arista, entradas con [nodo1, nodo2, destino]
 
 Estamos en nodo1, queremos ir a destino. Buscamos en la tabla de ruta el nodo2 que tenga nodo1 y destino. Ese es nuestro siguiente checkpoint. Buscamos en tabla de pasos la entrada con nodo1, nodo2. Ya tenemos las instrucciones.
 
-SELECT instrucciones, imagen FROM pasos WHERE nodo1=$nodo1, nodo2 = SELECT nodo2 FROM rutas WHERE nodo1=$nodo1, destino=$destino;
+SELECT instrucciones, imagen FROM instrucciones WHERE nodo1=$nodo1 and nodo2 = SELECT nodo2 FROM rutas WHERE nodo1=$nodo1 and destino=$destino;
+
+SELECT instrucciones, imagen
+FROM instrucciones
+WHERE nodo1=1 and nodo2 = (
+	SELECT nodo2
+	FROM rutas
+	WHERE nodo1=1 and destino=-1
+);
+
 
 
 [puntos de destino]
