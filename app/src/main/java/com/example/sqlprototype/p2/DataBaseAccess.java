@@ -32,6 +32,16 @@ public class DataBaseAccess {
         return instance;
     }
 
+    public void open() {
+        this.db = openHelper.getWritableDatabase();
+    }
+
+    public void close(){
+        if(this.db!=null){
+            this.db.close();
+        }
+    }
+
     public String getBestCarrMatch(String str_a ){
         str_a.toLowerCase();
         c = db.rawQuery("Select distinct lower(Tit) from merged", new String[]{});

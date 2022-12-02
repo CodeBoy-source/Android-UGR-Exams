@@ -1,4 +1,4 @@
-package com.example.qrcodeapp;
+package com.example.qrcodeappv2;
 
 import org.junit.Test;
 

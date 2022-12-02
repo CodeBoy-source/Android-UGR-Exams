@@ -17,4 +17,9 @@
         android:icon="@drawable/map"
         android:title="@string/mapa"
         />
+
+    <item
+        android:id="@+id/pattern"
+        android:title="@string/patron_movimiento"
+        />
 </menu>
