@@ -9,6 +9,8 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.hardware.Sensor;
@@ -30,6 +32,7 @@ import com.journeyapps.barcodescanner.ScanOptions;
 
 import com.example.sqlprototype.p4.DoubleSwipper;
 
+import java.text.CollationElementIterator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +49,18 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
     ActivityResultLauncher<ScanOptions> barLauncher;
 
     SensorManager sensorManager;
-    Sensor sensor, sensorgyroscope;
+    Sensor sensor, sensorgyroscope, magnetometerSensor;
+    // Data structure for sensor operations
+    private float[] lastAccelerometer = new float[3];
+    private float[] lastMagnetometer = new float[3];
+    private float[] rotationMatrix = new float[9];
+    private float[] Orientation = new float[3];
+    boolean isLastAccelerometerCopied = false, isLastMagnetometerCopied = false;
+    long lastUpdatedTime = 0;
+    float currentDegree = 0f;
+    private float dir_angle = 0;
+    private ImageView brujula;
+    private TextView textoGrado;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,12 +70,15 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
         sensorManager = (SensorManager) parent.getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
         sensorgyroscope = sensorManager.getSensorList(Sensor.TYPE_GYROSCOPE).get(0);
+        magnetometerSensor = sensorManager.getSensorList(Sensor.TYPE_MAGNETIC_FIELD).get(0);
 
         sensorManager=(SensorManager) parent.getSystemService(Context.SENSOR_SERVICE);
         //add listener for accelerometer
         sensorManager.registerListener(this,sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),SensorManager.SENSOR_DELAY_FASTEST);
         //add listener for gyroscope
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_FASTEST);
+        //add listener for magnetometer
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     @Override
@@ -73,6 +90,9 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
         txtInstructions = root.findViewById(R.id.txtInstructions);
         txtNextNode = root.findViewById(R.id.txtNextNode);
         imgInstructions = root.findViewById(R.id.imgInstructions);
+
+        textoGrado = root.findViewById(R.id.textoGrado);
+        brujula = root.findViewById(R.id.imgInstructions);
 
         doubleSwipper = new DoubleSwipper(root, this);
 
@@ -105,6 +125,8 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
     public void onSensorChanged(SensorEvent event) {
         if(event.sensor.getType()==Sensor.TYPE_ACCELEROMETER)
         {
+            System.arraycopy(event.values,0,lastAccelerometer,0,event.values.length);
+            isLastAccelerometerCopied = true;
             float x = event.values[0];
             float y = event.values[1];
             float z = event.values[2];
@@ -120,6 +142,30 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
             float z = event.values[2];
             if (findPattern.read_gyro(x,y,z))
                 Toast.makeText(getContext(),"PATTERN 2 READ",Toast.LENGTH_SHORT).show();
+        }
+        if(event.sensor == magnetometerSensor) {
+            System.arraycopy(event.values, 0, lastMagnetometer,0,event.values.length);
+            isLastMagnetometerCopied = true;
+        }
+
+        if(isLastAccelerometerCopied && isLastMagnetometerCopied && System.currentTimeMillis() - lastUpdatedTime>250){
+            SensorManager.getRotationMatrix(rotationMatrix,null,lastAccelerometer,lastMagnetometer);
+            SensorManager.getOrientation(rotationMatrix,Orientation);
+
+            float azimuthInRadians = Orientation[0];
+            float azimuthToDegree = (float) Math.toDegrees(azimuthInRadians) + dir_angle;
+
+            RotateAnimation rotateAnimation =
+                    new RotateAnimation(currentDegree,-azimuthToDegree, Animation.RELATIVE_TO_SELF, 0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+            rotateAnimation.setDuration(250);
+            rotateAnimation.setFillAfter(true);
+            brujula.startAnimation(rotateAnimation);
+
+            currentDegree=-azimuthToDegree;
+            lastUpdatedTime = System.currentTimeMillis();
+            int x = (int) azimuthToDegree;
+            textoGrado.setText("Gire: " + x + "·");
+
         }
     }
 

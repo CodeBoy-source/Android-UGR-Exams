@@ -12,60 +12,80 @@
         android:layout_height="wrap_content"
         android:text="Welcome to P4"
         android:textSize="34sp"
-        tools:layout_editor_absoluteX="82dp"
-        tools:layout_editor_absoluteY="87dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.17000002" />
 
     <Button
         android:id="@+id/btnBiblioteca"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="208dp"
+        android:layout_width="160dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="14dp"
         android:text="Biblioteca"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/btnAula35"
+        app:layout_constraintEnd_toStartOf="@+id/btnCafeteria"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnAula35"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="160dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="23dp"
         android:text="Aula 3.5"
-        tools:layout_editor_absoluteX="60dp"
-        tools:layout_editor_absoluteY="270dp" />
+        app:layout_constraintBottom_toTopOf="@+id/btnDespachoMarcelino"
+        app:layout_constraintEnd_toStartOf="@+id/btnSecretaria"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnSecretaria"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="160dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="20dp"
         android:text="Secretaría"
-        tools:layout_editor_absoluteX="208dp"
-        tools:layout_editor_absoluteY="270dp" />
+        app:layout_constraintBottom_toTopOf="@+id/btnDespachoMarcelino"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/btnAula35" />
 
     <Button
         android:id="@+id/btnDespachoMarcelino"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Despacho Marcelino"
-        tools:layout_editor_absoluteX="101dp"
-        tools:layout_editor_absoluteY="341dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnCafeteria"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="208dp"
-        android:layout_marginEnd="76dp"
+        android:layout_width="160dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="16dp"
         android:text="Cafetería"
+        app:layout_constraintBottom_toTopOf="@+id/btnSecretaria"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/btnBiblioteca" />
 
     <Button
         android:id="@+id/btnQr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="152dp"
-        android:layout_marginBottom="216dp"
         android:text="qr"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.68" />
 </androidx.constraintlayout.widget.ConstraintLayout>
