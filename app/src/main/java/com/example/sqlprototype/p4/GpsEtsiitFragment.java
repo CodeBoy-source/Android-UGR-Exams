@@ -141,6 +141,7 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
             textToSpeechEngine.speak(respuesta_, TextToSpeech.QUEUE_FLUSH, null, "tts1");
             txtInstructions.setText(respuesta_);
             txtNextNode.setText(respuesta_);
+            imgInstructions.setImageResource(R.drawable.logougr2);
         }else {
             // Get instructions from db
             DataBaseAccess db = DataBaseAccess.getInstance(root.getContext());
@@ -167,11 +168,11 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
     }
 
     public void doubleSwipeUp(){
-        txtInstructions.setVisibility(View.GONE);
+        txtInstructions.setVisibility(View.VISIBLE);
     }
 
     public void doubleSwipeDown(){
-        txtInstructions.setVisibility(View.VISIBLE);
+        txtInstructions.setVisibility(View.GONE);
     }
 
     private void launchQr() {

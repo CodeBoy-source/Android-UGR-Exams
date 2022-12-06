@@ -12,16 +12,56 @@
 
     <TextView
         android:id="@+id/txtInstructions"
-        android:layout_width="342dp"
-        android:layout_height="396dp"
+        android:layout_width="352dp"
+        android:layout_height="wrap_content"
+        android:elevation="2dp"
         android:text="TextView"
-        android:textSize="34sp"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:visibility="invisible"
+        android:background="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/txtAngle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/txtNextNode"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
+            android:text="Siguiente punto: X"
+            android:textAlignment="center"
+            android:textSize="34sp"
+            android:elevation="2dp"
+            app:layout_constraintBottom_toTopOf="@+id/txtAngle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.13999999" />
+
+        <TextView
+            android:id="@+id/txtAngle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="9dp"
+            android:text="Gire X"
+            app:layout_constraintBottom_toTopOf="@+id/imgCompass"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/imgCompass"
+            android:layout_width="151dp"
+            android:layout_height="121dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imgInstructions"
+            app:layout_constraintVertical_bias="0.84000003"
+            app:srcCompat="@drawable/arrow" />
 
     <ImageView
         android:id="@+id/imgInstructions"
@@ -34,39 +74,6 @@
         tools:src="@tools:sample/backgrounds/scenic"
         tools:visibility="visible" />
 
-    <TextView
-        android:id="@+id/txtNextNode"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
-        android:text="Siguiente punto: X"
-        android:textSize="34sp"
-        app:layout_constraintBottom_toTopOf="@+id/txtAngle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.13999999" />
-
-    <TextView
-        android:id="@+id/txtAngle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="9dp"
-        android:text="Gire X"
-        app:layout_constraintBottom_toTopOf="@+id/imgCompass"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/imgCompass"
-        android:layout_width="151dp"
-        android:layout_height="121dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imgInstructions"
-        app:layout_constraintVertical_bias="0.84000003"
-        app:srcCompat="@drawable/arrow" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
