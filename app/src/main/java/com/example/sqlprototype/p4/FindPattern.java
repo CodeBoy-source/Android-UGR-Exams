@@ -37,7 +37,8 @@ public class FindPattern {
     private ScheduledExecutorService executorService2;
     public static int update_rate = 30;
 
-    public boolean read_acc(float x, float y, float z){
+    public boolean read_acc(float[] values){
+        float x = values[0], y = values[1], z = values[2];
         if(!first_read || orientation_change.get()>=update_rate) {
             FCX = x;
             FCY = y;
@@ -64,10 +65,10 @@ public class FindPattern {
             upd_y = Math.abs(y - FCY) <= EPSILON_Y;
             upd_z = Math.abs(z - FCZ) <= EPSILON_Z;
         }
-        System.out.println(upd_x + " -- " + upd_y + " -- " + upd_z + " -- " + is_runningacc + " -- " + countacc.get() + " -- " + THRESHOLD_Y + " || " + orientation_change);
+        /*System.out.println(upd_x + " -- " + upd_y + " -- " + upd_z + " -- " + is_runningacc + " -- " + countacc.get() + " -- " + THRESHOLD_Y + " || " + orientation_change);
         System.out.println(FCY + " -- " + FCZ);
         System.out.println(y + " -- " + z);
-        System.out.println(diff_y + " -- " + diff_z);
+        System.out.println(diff_y + " -- " + diff_z);*/
         if(upd_y && upd_z){
             THRESHOLD_Y.set(Math.abs(THRESHOLD_Y.get()-CONST_Y));
             THRESHOLD_Z.set(Math.abs(THRESHOLD_Z.get()-CONST_Z));
@@ -86,7 +87,8 @@ public class FindPattern {
             return false;
         }
     }
-    public boolean read_gyro(float x, float y, float z){
+    public boolean read_gyro(float[] values){
+        float x = values[0], y = values[1], z = values[2];
         boolean res = false;
         if(Math.abs(lastGX - x)<=EPSILON_GX && Math.abs(lastGZ-z)<=EPSILON_GZ) {
             if (Math.signum(THRESHOLD_GY) >= 1) {

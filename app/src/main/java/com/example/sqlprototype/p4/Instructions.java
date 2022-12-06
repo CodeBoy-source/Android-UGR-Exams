@@ -4,10 +4,12 @@ public class Instructions {
     String instructions;
     String nextNodeName;
     int nextNode;
+    String direction;
 
-    Instructions(String instructions, String nextNodeName, int nextNode) {
+    Instructions(String instructions, String nextNodeName, int nextNode, String direction) {
         this.instructions = instructions;
         this.nextNodeName = nextNodeName;
         this.nextNode = nextNode;
+        this.direction = direction;
     }
 }

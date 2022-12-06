@@ -1,66 +1,49 @@
 package com.example.sqlprototype.p4;
 
-import android.content.DialogInterface;
 import android.content.Context;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-
-import android.widget.Toast;
 
 
 import com.example.sqlprototype.R;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
-import com.example.sqlprototype.p4.DoubleSwipper;
-
-import java.text.CollationElementIterator;
-import java.util.HashMap;
-import java.util.Map;
-
 
 public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallbacks, SensorEventListener {
     View root;
-    int currentNode = 0, destinyNode = 0;
-    TextView txtInstructions, txtNextNode;
-    ImageView imgInstructions;
+    int destinyNode = 0;
+    Instructions currentInstr;
+    
+    TextView txtInstructions, txtNextNode, txtAngle;
+    ImageView imgInstructions, imgCompass;
+    
     TextToSpeech textToSpeechEngine;
     DoubleSwipper doubleSwipper;
     static FindPattern findPattern = new FindPattern();
+    Compass compass;
 
     ActivityResultLauncher<ScanOptions> barLauncher;
 
     SensorManager sensorManager;
     Sensor sensor, sensorgyroscope, magnetometerSensor;
-    // Data structure for sensor operations
-    private float[] lastAccelerometer = new float[3];
-    private float[] lastMagnetometer = new float[3];
-    private float[] rotationMatrix = new float[9];
-    private float[] Orientation = new float[3];
-    boolean isLastAccelerometerCopied = false, isLastMagnetometerCopied = false;
-    long lastUpdatedTime = 0;
-    float currentDegree = 0f;
-    private float dir_angle = 0;
-    private ImageView brujula;
-    private TextView textoGrado;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,12 +72,12 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
 
         txtInstructions = root.findViewById(R.id.txtInstructions);
         txtNextNode = root.findViewById(R.id.txtNextNode);
+        txtAngle = root.findViewById(R.id.txtAngle);
         imgInstructions = root.findViewById(R.id.imgInstructions);
-
-        textoGrado = root.findViewById(R.id.textoGrado);
-        brujula = root.findViewById(R.id.imgInstructions);
+        imgCompass = root.findViewById(R.id.imgCompass);
 
         doubleSwipper = new DoubleSwipper(root, this);
+        compass = new Compass(imgCompass, txtAngle);
 
         textToSpeechEngine = new TextToSpeech(root.getContext(), status -> {
             if (status != TextToSpeech.SUCCESS) {
@@ -106,66 +89,44 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
             throw new RuntimeException("Destiny node is 0");
 
         barLauncher = registerForActivityResult(new ScanContract(), result -> {
-            if (result.getContents() == null)
-                return;
-
             String qr_result = result.getContents();
-            currentNode = Integer.parseInt(qr_result);
+            if (qr_result == null) {
+                // Launch QR again if this is the first time
+                if (currentInstr == null) {
+                    Toast.makeText(getContext(), "Es necesario escanear un QR para indicar la localización inicial", Toast.LENGTH_SHORT).show();
+                    launchQr();
+                }
+                return;
+            }
 
-            DataBaseAccess db = DataBaseAccess.getInstance(root.getContext());
-            Instructions instr = db.getInstructions(currentNode, destinyNode);
-            doInstructions(instr);
+            int currentNode = Integer.parseInt(qr_result);
+            doInstructions(currentNode);
         });
+
         launchQr();
+        //doInstructions(-1);
 
         return root;
     }
 
+
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if(event.sensor.getType()==Sensor.TYPE_ACCELEROMETER)
-        {
-            System.arraycopy(event.values,0,lastAccelerometer,0,event.values.length);
-            isLastAccelerometerCopied = true;
-            float x = event.values[0];
-            float y = event.values[1];
-            float z = event.values[2];
-            if (findPattern.read_acc(x,y,z))
-                Toast.makeText(getContext(), "PATTERN READ", Toast.LENGTH_SHORT).show();
-                //launchQr();
-
+        if(event.sensor.getType()==Sensor.TYPE_ACCELEROMETER) {
+            compass.updateAccelerometer(event.values);
+            if (findPattern.read_acc(event.values)) {
+                // Launch QR to get new current node and display new instructions
+                launchQr();
+            }
         }
-        if(event.sensor.getType()==Sensor.TYPE_GYROSCOPE)
-        {
-            float x = event.values[0];
-            float y = event.values[1];
-            float z = event.values[2];
-            if (findPattern.read_gyro(x,y,z))
-                Toast.makeText(getContext(),"PATTERN 2 READ",Toast.LENGTH_SHORT).show();
+        if(event.sensor.getType()==Sensor.TYPE_GYROSCOPE) {
+            if (findPattern.read_gyro(event.values)) {
+                // Display instructions from next node
+                doInstructions(currentInstr.nextNode);
+            }
         }
         if(event.sensor == magnetometerSensor) {
-            System.arraycopy(event.values, 0, lastMagnetometer,0,event.values.length);
-            isLastMagnetometerCopied = true;
-        }
-
-        if(isLastAccelerometerCopied && isLastMagnetometerCopied && System.currentTimeMillis() - lastUpdatedTime>250){
-            SensorManager.getRotationMatrix(rotationMatrix,null,lastAccelerometer,lastMagnetometer);
-            SensorManager.getOrientation(rotationMatrix,Orientation);
-
-            float azimuthInRadians = Orientation[0];
-            float azimuthToDegree = (float) Math.toDegrees(azimuthInRadians) + dir_angle;
-
-            RotateAnimation rotateAnimation =
-                    new RotateAnimation(currentDegree,-azimuthToDegree, Animation.RELATIVE_TO_SELF, 0.5f,Animation.RELATIVE_TO_SELF,0.5f);
-            rotateAnimation.setDuration(250);
-            rotateAnimation.setFillAfter(true);
-            brujula.startAnimation(rotateAnimation);
-
-            currentDegree=-azimuthToDegree;
-            lastUpdatedTime = System.currentTimeMillis();
-            int x = (int) azimuthToDegree;
-            textoGrado.setText("Gire: " + x + "·");
-
+            compass.updateMagnetometer(event.values);
         }
     }
 
@@ -173,22 +134,31 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
     public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
 
-    private void doInstructions(Instructions instr) {
+    private void doInstructions(int currentNode) {
+        if (currentNode == destinyNode) {
+            // TODO: Hemos llegado al destino
+            // return;
+        }
+
+        // Get instructions from db
+        DataBaseAccess db = DataBaseAccess.getInstance(root.getContext());
+        currentInstr = db.getInstructions(currentNode, destinyNode);
+
         // Say instructions
-        textToSpeechEngine.speak(instr.instructions, TextToSpeech.QUEUE_FLUSH, null, "tts1");
+        textToSpeechEngine.speak(currentInstr.instructions, TextToSpeech.QUEUE_FLUSH, null, "tts1");
 
         // Set text instructions (which are invisible by default)
-        txtInstructions.setText(instr.instructions);
+        txtInstructions.setText(currentInstr.instructions);
 
         // Set image
-        int img = InstructionsImgMap.getImg(currentNode, instr.nextNode);
+        int img = InstructionsImgMap.getImg(currentNode, currentInstr.nextNode);
         imgInstructions.setImageResource(img);
 
         // Display where we are going to
-        txtNextNode.setText("Siguiente punto: " + instr.nextNodeName);
+        txtNextNode.setText("Siguiente punto: " + currentInstr.nextNodeName);
 
-        // TODO set brujuleishion
-        //brujuleishion.setDir(X);
+        // Set compass
+        compass.setDirection(currentInstr.direction);
     }
 
     public void doubleSwipeUp(){
@@ -201,7 +171,7 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
 
     private void launchQr() {
         ScanOptions options = new ScanOptions();
-        options.setBeepEnabled(true);
+        options.setBeepEnabled(false);
         options.setOrientationLocked(false);
         options.setCaptureActivity(CaptureAct.class);
         options.setPrompt("Escanea el código QR");

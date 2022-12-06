@@ -7,10 +7,10 @@
 
     <TextView
         android:id="@+id/txtInstructions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="164dp"
+        android:layout_width="342dp"
+        android:layout_height="396dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="140dp"
         android:text="TextView"
         android:textSize="34sp"
         android:visibility="invisible"
@@ -21,25 +21,10 @@
         android:id="@+id/imgInstructions"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/textoGrado"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5"
         tools:src="@tools:sample/backgrounds/scenic"
-        tools:visibility="visible" />
-
-    <ImageView
-        android:id="@+id/brujula"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textoGrado"
-        tools:src="@drawable/arrow2"
         tools:visibility="visible" />
 
     <TextView
@@ -52,18 +37,31 @@
         android:layout_marginBottom="20dp"
         android:text="Siguiente punto: X"
         android:textSize="34sp"
-        app:layout_constraintBottom_toTopOf="@+id/textoGrado"
+        app:layout_constraintBottom_toTopOf="@+id/txtAngle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.13999999" />
 
     <TextView
-        android:id="@+id/textoGrado"
+        android:id="@+id/txtAngle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:layout_marginTop="16dp"
+        android:text="Gire X"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgInstructions" />
+        app:layout_constraintTop_toBottomOf="@+id/imgCompass" />
+
+    <ImageView
+        android:id="@+id/imgCompass"
+        android:layout_width="151dp"
+        android:layout_height="121dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="512dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
