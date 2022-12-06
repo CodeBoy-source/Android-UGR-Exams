@@ -18,8 +18,10 @@
         android:title="@string/mapa"
         />
 
-    <item
+   <!--
+   <item
         android:id="@+id/pattern"
         android:title="@string/patron_movimiento"
-        />
+       />
+        -->
 </menu>

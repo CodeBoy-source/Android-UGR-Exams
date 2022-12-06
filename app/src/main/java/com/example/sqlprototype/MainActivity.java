@@ -10,17 +10,24 @@ import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.sqlprototype.p2.HomeFragment;
 import com.example.sqlprototype.p3.DialogFlowFragment;
+import com.example.sqlprototype.p4.FindPattern;
 import com.example.sqlprototype.p4.GpsEtsiitHomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.example.sqlprototype.p4.RecordPattern;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -31,6 +38,18 @@ public class MainActivity extends AppCompatActivity {
     DialogFlowFragment dialogFlowFragment = new DialogFlowFragment();
     RecordPattern recordPatternFragment = new RecordPattern();
     public static final Integer RecordAudioRequestCode = 1;
+
+    // How many times we have to press home button
+    public static Integer debuggingThreshold = 10;
+    // Amount of time we have to wait = 3 seconds
+    public static Integer debuggingTimerReset = 3;
+    // Boolean to know if timer is ticking
+    public static boolean is_running = false;
+    private static boolean checkDebuggingPermission = false;
+    // Counter for the debuggin page:
+    public static Integer debuggingCounter = 0;
+    // Executor Service to reset the counter after 3 seconds
+    public static ScheduledExecutorService executorService;
 
 
     private void checkPermission() {
@@ -65,32 +84,60 @@ public class MainActivity extends AppCompatActivity {
             checkPermission();
         }
 
-        String[] permissionsStorage = {Manifest.permission.MANAGE_EXTERNAL_STORAGE};
-        int requestExternalStorage = 1;
-        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE);
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, permissionsStorage, requestExternalStorage);
-        }
+        // Initialize debugging page variables
+        executorService = Executors.newSingleThreadScheduledExecutor();
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch(item.getItemId()){
                 case R.id.menuHome:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
+                    gpsEtsiitHomeFragment.cancelTxtSpeech();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        treatDebuggingInterface();
+                    }else{
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
+                    }
                     return true;
                 case R.id.menuDialog:
+                    gpsEtsiitHomeFragment.cancelTxtSpeech();
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,dialogFlowFragment).commit();
                     return true;
                 case R.id.mapa:
+                    gpsEtsiitHomeFragment.cancelTxtSpeech();
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, gpsEtsiitHomeFragment).commit();
                     return true;
-                case R.id.pattern:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container,recordPatternFragment).commit();
-                    return true;
+               // case R.id.pattern:
+               //     getSupportFragmentManager().beginTransaction().replace(R.id.container,recordPatternFragment).commit();
+               //     return true;
             }
             return false;
         });
+    }
 
+    public static void ResetDebuggerCounter(){
+        debuggingCounter = 0;
+        is_running=false;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public void treatDebuggingInterface(){
+        if(checkDebuggingPermission) {
+            String[] permissionsStorage = {Manifest.permission.MANAGE_EXTERNAL_STORAGE};
+            int requestExternalStorage = 1;
+            int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE);
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, permissionsStorage, requestExternalStorage);
+            }
+            debuggingCounter += 1;
+            if(!is_running) {
+                executorService.schedule(MainActivity::ResetDebuggerCounter, debuggingTimerReset, TimeUnit.SECONDS);
+                is_running=true;
+            }
+            if(debuggingCounter>=debuggingThreshold)
+                getSupportFragmentManager().beginTransaction().replace(R.id.container,recordPatternFragment).commit();
+            else
+                getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
+        }
     }
 }

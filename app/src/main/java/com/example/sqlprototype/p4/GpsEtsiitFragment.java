@@ -137,28 +137,33 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
     private void doInstructions(int currentNode) {
         if (currentNode == destinyNode) {
             // TODO: Hemos llegado al destino
-            // return;
+            String respuesta_ = "¡Hemos llegado a " + currentInstr.nextNodeName + "! Hasta la próxima.";
+            textToSpeechEngine.speak(respuesta_, TextToSpeech.QUEUE_FLUSH, null, "tts1");
+            txtInstructions.setText(respuesta_);
+            txtNextNode.setText(respuesta_);
+        }else {
+            // Get instructions from db
+            DataBaseAccess db = DataBaseAccess.getInstance(root.getContext());
+            currentInstr = db.getInstructions(currentNode, destinyNode);
+
+            // Say instructions
+            textToSpeechEngine.speak(currentInstr.instructions, TextToSpeech.QUEUE_FLUSH, null, "tts1");
+
+            // Set text instructions (which are invisible by default)
+            txtInstructions.setText(currentInstr.instructions);
+
+            // Set image
+            int img = InstructionsImgMap.getImg(currentNode, currentInstr.nextNode);
+            imgInstructions.setImageResource(img);
+
+            // Display where we are going to
+            txtNextNode.setText("Siguiente punto: " + currentInstr.nextNodeName);
+
+            // Set compass
+            compass.setDirection(currentInstr.direction);
+            // test go right, 90 from north
+            //compass.setDirection("90");
         }
-
-        // Get instructions from db
-        DataBaseAccess db = DataBaseAccess.getInstance(root.getContext());
-        currentInstr = db.getInstructions(currentNode, destinyNode);
-
-        // Say instructions
-        textToSpeechEngine.speak(currentInstr.instructions, TextToSpeech.QUEUE_FLUSH, null, "tts1");
-
-        // Set text instructions (which are invisible by default)
-        txtInstructions.setText(currentInstr.instructions);
-
-        // Set image
-        int img = InstructionsImgMap.getImg(currentNode, currentInstr.nextNode);
-        imgInstructions.setImageResource(img);
-
-        // Display where we are going to
-        txtNextNode.setText("Siguiente punto: " + currentInstr.nextNodeName);
-
-        // Set compass
-        compass.setDirection(currentInstr.direction);
     }
 
     public void doubleSwipeUp(){
@@ -182,5 +187,14 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
         this.destinyNode = destinyNode;
     }
 
-
+    public boolean cancelTxtSpeech() {
+        boolean res = false;
+        if(textToSpeechEngine == null)
+            return res;
+        if (textToSpeechEngine.isSpeaking()) {
+            textToSpeechEngine.stop();
+            res = true;
+        }
+        return res;
+    }
 }

@@ -47,4 +47,7 @@ public class GpsEtsiitHomeFragment extends Fragment {
 
         return root;
     }
+    public boolean cancelTxtSpeech(){
+        return gpsEtsiitFragment.cancelTxtSpeech();
+    }
 }

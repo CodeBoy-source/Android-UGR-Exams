@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class FindPattern {
+public class FindPattern  {
 
     public static int CONST_Y = 10;
     public static int CONST_Z = 10;

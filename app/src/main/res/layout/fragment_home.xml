@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:fillViewport="true"
     tools:context=".p2.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/Constraint"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="70px">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/imageView"
@@ -21,11 +22,11 @@
             android:scaleX="1.3"
             android:scaleY="1.5"
             android:src="@drawable/logougr2"
-            app:layout_constraintBottom_toTopOf="@+id/btnSubmit"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lblCarrera"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5" />
 
         <Button
@@ -48,6 +49,7 @@
             android:textAlignment="center"
             android:textSize="24sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnSubmit" />
@@ -158,16 +160,19 @@
         <TextView
             android:id="@+id/lblTitulo"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="119dp"
+            android:layout_marginTop="5dp"
             android:fontFamily="serif"
             android:gravity="center_horizontal|center_vertical"
             android:text="Consultorio de Exámenes"
             android:textAlignment="center"
             android:textSize="48sp"
-            app:layout_constraintBottom_toTopOf="@+id/lblCarrera"
+            app:layout_constraintBottom_toTopOf="@+id/imageView"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.49"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.26999998" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
