@@ -33,6 +33,7 @@ public class RecordPattern extends Fragment implements SensorEventListener {
     Sensor sensor, sensorgyroscope;
     FileWriter accwriter,gyrowriter;
     File accfile, gyrofile;
+    static FindPattern findPattern = new FindPattern();
 
     public int index = 0;
 
@@ -128,6 +129,9 @@ public class RecordPattern extends Fragment implements SensorEventListener {
             coordY.setText("Y: "+y);
             coordZ.setText("Z: "+z);
 
+            if(findPattern.read_acc(event.values))
+                Toast.makeText(getContext(), "ACCELEROMETER", Toast.LENGTH_SHORT).show();
+
             if(record && filecreated)
             {
                 try
@@ -150,6 +154,9 @@ public class RecordPattern extends Fragment implements SensorEventListener {
             coordXPitch.setText("Orientation X (Roll) :" + Float.toString(event.values[0]));
             coordYRoll.setText("Orientation Y (Pitch) :" + Float.toString(event.values[1]));
             coordZYaw.setText("Orientation Z (Yaw):" + Float.toString(event.values[2]));
+
+            if(findPattern.read_gyro(event.values))
+                Toast.makeText(getContext(), "GYROSCOPIO", Toast.LENGTH_SHORT).show();
 
             if(record && filecreated ) {
                 try {

@@ -36,6 +36,8 @@ public class FindPattern  {
     private ScheduledExecutorService executorService;
     private ScheduledExecutorService executorService2;
     public static int update_rate = 30;
+    public static int GyroSecs = 3;
+    public static int AccSecs = 3;
 
     public boolean read_acc(float[] values){
         float x = values[0], y = values[1], z = values[2];
@@ -75,7 +77,7 @@ public class FindPattern  {
             countacc.incrementAndGet();
             if(!is_runningacc) {
                 executorService = Executors.newSingleThreadScheduledExecutor();
-                executorService.schedule(FindPattern::ResetPatternAcc, 4, TimeUnit.SECONDS);
+                executorService.schedule(FindPattern::ResetPatternAcc, AccSecs, TimeUnit.SECONDS);
             }
             is_runningacc = true;
         }
@@ -97,7 +99,7 @@ public class FindPattern  {
                     THRESHOLD_GY *= -1;
                     if (!is_runninggyro) {
                         executorService2 = Executors.newSingleThreadScheduledExecutor();
-                        executorService2.schedule(FindPattern::ResetPatternGyro, 3, TimeUnit.SECONDS);
+                        executorService2.schedule(FindPattern::ResetPatternGyro, GyroSecs, TimeUnit.SECONDS);
                     }
                     is_runninggyro = true;
                 }

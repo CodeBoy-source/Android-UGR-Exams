@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     public static Integer debuggingTimerReset = 3;
     // Boolean to know if timer is ticking
     public static boolean is_running = false;
-    private static boolean checkDebuggingPermission = false;
+    private static boolean checkDebuggingPermission = true;
     // Counter for the debuggin page:
     public static Integer debuggingCounter = 0;
     // Executor Service to reset the counter after 3 seconds
@@ -93,13 +93,13 @@ public class MainActivity extends AppCompatActivity {
             switch(item.getItemId()){
                 case R.id.menuHome:
                     gpsEtsiitHomeFragment.cancelTxtSpeech();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        treatDebuggingInterface();
-                    }else{
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
-                    }
+                    gpsEtsiitHomeFragment.unregisterListener();
+                    treatDebuggingInterface();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
+
                     return true;
                 case R.id.menuDialog:
+                    gpsEtsiitHomeFragment.unregisterListener();
                     gpsEtsiitHomeFragment.cancelTxtSpeech();
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,dialogFlowFragment).commit();
                     return true;
@@ -123,20 +123,20 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void treatDebuggingInterface(){
         if(checkDebuggingPermission) {
-            String[] permissionsStorage = {Manifest.permission.MANAGE_EXTERNAL_STORAGE};
-            int requestExternalStorage = 1;
-            int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE);
-            if (permission != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, permissionsStorage, requestExternalStorage);
-            }
             debuggingCounter += 1;
             if(!is_running) {
                 executorService.schedule(MainActivity::ResetDebuggerCounter, debuggingTimerReset, TimeUnit.SECONDS);
                 is_running=true;
             }
-            if(debuggingCounter>=debuggingThreshold)
-                getSupportFragmentManager().beginTransaction().replace(R.id.container,recordPatternFragment).commit();
-            else
+            if(debuggingCounter>=debuggingThreshold) {
+                String[] permissionsStorage = {Manifest.permission.MANAGE_EXTERNAL_STORAGE};
+                int requestExternalStorage = 1;
+                int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE);
+                if (permission != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, permissionsStorage, requestExternalStorage);
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, recordPatternFragment).commit();
+            }else
                 getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
         }
     }

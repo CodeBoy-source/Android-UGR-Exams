@@ -29,7 +29,6 @@ public class GpsEtsiitHomeFragment extends Fragment {
         btnAula35 = root.findViewById(R.id.btnAula35);
         btnSecretaria = root.findViewById(R.id.btnSecretaria);
         btnDespachoMarcelino = root.findViewById(R.id.btnDespachoMarcelino);
-        btnQr = root.findViewById(R.id.btnQr);
 
         for (Button btn : new Button[]{btnBiblioteca, btnCafeteria, btnAula35, btnSecretaria, btnDespachoMarcelino}) {
             btn.setOnClickListener(v -> {
@@ -49,5 +48,9 @@ public class GpsEtsiitHomeFragment extends Fragment {
     }
     public boolean cancelTxtSpeech(){
         return gpsEtsiitFragment.cancelTxtSpeech();
+    }
+
+    public void unregisterListener(){
+        gpsEtsiitFragment.unregisterListeners();
     }
 }

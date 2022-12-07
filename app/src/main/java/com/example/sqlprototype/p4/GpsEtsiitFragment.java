@@ -39,6 +39,8 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
     static FindPattern findPattern = new FindPattern();
     Compass compass;
 
+    boolean finalizado = false;
+
     ActivityResultLauncher<ScanOptions> barLauncher;
 
     SensorManager sensorManager;
@@ -135,8 +137,11 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
 
     private void doInstructions(int currentNode) {
         if (currentNode == destinyNode) {
-            // TODO: Hemos llegado al destino
-            String respuesta_ = "¡Hemos llegado a " + currentInstr.nextNodeName + "! Hasta la próxima.";
+            String respuesta_ = "";
+            if(currentInstr!=null)
+                respuesta_ = "¡Hemos llegado a " + currentInstr.nextNodeName + "! Hasta la próxima.";
+            else
+                respuesta_ = "¡Ya estamos donde deseamos!";
             textToSpeechEngine.speak(respuesta_, TextToSpeech.QUEUE_FLUSH, null, "tts1");
             txtInstructions.setText(respuesta_);
             txtNextNode.setText(respuesta_);
@@ -196,5 +201,10 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
             res = true;
         }
         return res;
+    }
+
+    public void unregisterListeners(){
+        if(sensorManager!=null)
+            sensorManager.unregisterListener(this);
     }
 }

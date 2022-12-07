@@ -57,9 +57,8 @@
             android:id="@+id/btnBiblioteca"
             android:layout_width="160dp"
             android:layout_height="45dp"
-            android:layout_marginBottom="15dp"
             android:text="Biblioteca"
-            app:layout_constraintBottom_toTopOf="@+id/btnAula35"
+            app:layout_constraintBottom_toTopOf="@+id/btnDespachoMarcelino"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.1"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +73,8 @@
             app:layout_constraintBottom_toTopOf="@+id/btnDespachoMarcelino"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.1"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnBiblioteca" />
 
         <Button
             android:id="@+id/btnSecretaria"
@@ -85,41 +85,31 @@
             app:layout_constraintBottom_toTopOf="@+id/btnDespachoMarcelino"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.9"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnCafeteria" />
 
         <Button
             android:id="@+id/btnDespachoMarcelino"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="73dp"
             android:text="Despacho Marcelino"
-            app:layout_constraintBottom_toTopOf="@+id/btnQr"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2"
+            app:layout_constraintVertical_bias="0.120000005" />
 
         <Button
             android:id="@+id/btnCafeteria"
             android:layout_width="160dp"
             android:layout_height="45dp"
-            android:layout_marginBottom="15dp"
             android:text="Cafetería"
-            app:layout_constraintBottom_toTopOf="@+id/btnSecretaria"
+            app:layout_constraintBottom_toTopOf="@+id/btnDespachoMarcelino"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.9"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/imageView2" />
-
-        <Button
-            android:id="@+id/btnQr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="qr"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2"
-            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
