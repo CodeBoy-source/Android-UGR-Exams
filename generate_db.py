@@ -4,6 +4,7 @@ import csv
 import pandas
 import sqlite3
 from pathlib import Path
+from PIL import Image
 from collections import defaultdict
 
 HEADER_NODOS = ["nodo", "nombre"]
@@ -30,42 +31,42 @@ DESTINOS = [
 	"despacho marcelino", # -5 (3 planta despacho 21)
 ]
 
-HEADER_INSTRUCCIONES = ["nodo1", "nodo2", "instrucciones", "imagen", "direccion"]
+HEADER_INSTRUCCIONES = ["nodo1", "nodo2", "instrucciones", "direccion"]
 TABLA_INSTRUCCIONES = [
-	('1', '-1', "Situése de manera que la fuente quede a mano izquierda, cruce la puerta, gire a la derecha y camine recto hasta encontrarse enfrente de la puerta.","imgs/imgnodo_1_-1", "0"),
-	('1', '2', "Situese de espaldas a la fuente y baje las escaleras. Cuando salga de las escaleras, gire a la derecha y camine recto hasta tener el ascensor a su derecha.","imgs/imgnodo_1_2", "down"),
-	('2', '3', "Situése de manera que la puerta del ascensor quede a su derecha. Camine recto y gire a la derecha para encontrarse con la puerta de salida del patio.","imgs/imgnodo_2_3", "0"),
-	('2', '10', "Situése de manera que la puerta del ascensor quede a su izquierda. Camine recto hasta que pase entre las columnas que le llevan al hall de secretaría.","imgs/imgnodo_2_10", "0"),
-	('3', '10', "Situese de espaldas a la puerta. Avance y pase entre las columnas que le llevan al hall de secretaría.","imgs/imgnodo_3_10", "0"),
-	('3', '5', "Salga por la puerta del edificio principal, gire a la izquierda y camine recto hasta llegar a la puerta del edificio de aulas.","imgs/imgnodo_3_5", "0"),
-	('3', '4', "Situése de cara a la puerta y baje por las escaleras de su derecha. A su izquierda se encuentra la puerta del aula de estudio.","imgs/imgnodo_3_4", "down"),
-	('4', '-2', "Situése de espaldas a la puerta del aula de estudio. Camine recto y gire a la izquierda en dirección a la puerta de la cafeteria.","imgs/imgnodo_4_-2", "0"),
-	('5', '6', "Entre al edificio, gire a la derecha y continúe por el pasillo hasta que a su derecha se encuentre la puerta del ascensor de la planta 0.","imgs/imgnodo_5_6", "0"),
-	('6', '7', "Suba las escaleras hasta la primera planta, luego gire a la derecha y camine recto hasta que la puerta del ascensor se encuentre a su izquierda.","imgs/imgnodo_6_7", "up"),
-	('7', '8', "Suba las escaleras hasta la segunda planta, luego gire a la derecha y camine recto hasta que la puerta del ascensor se encuentre a su izquierda.","imgs/imgnodo_7_8", "up"),
-	('8', '9', "Suba las escaleras hasta la tercera planta, luego gire a la derecha y camine recto hasta que la puerta del ascensor se encuentre a su izquierda.","imgs/imgnodo_8_9", "up"),
-	('9', '-3', "Situése de manera que la puerta del ascensor se encuentre a su izquierda. Camine recto hasta que se encuentre a su derecha la puerta del aula 3.5.","imgs/imgnodo_9_-3", "0"),
-	('9', '11', "Situése de manera que la puerta del ascensor se encuentre a su izquierda. Camine recto hasta que pueda salir por la izquierda a las escaleras de emergencia.","imgs/imgnodo_9_11", "0"),
-	('10', '-4', "Avance por el hall en dirección contraria a la puerta de salida hasta que se encuentre la puerta de la secretaría.","imgs/imgnodo_10_-4", "0"),
-	('11', '-3', "Entre al edificio de las aulas, gire a la derecha y camine recto hasta que a su izquierda se encuentre el aula 3.5.","imgs/imgnodo_11_-3", "0"),
-	('11', '-5', "Situése de espaldas a la puerta del edificio de las aulas. Entre por la puerta que tiene delante y avance hasta encontrar el despacho 21.","imgs/imgnodo_11_-5", "0"),
-	('-1', '1', "Salga por la puerta principal de la biblioteca, camine recto y salga por la puerta de la izquierda.","imgs/imgnodo_-1_1", "0"),
-	('2', '1', "Situése de manera que la puerta del ascensor quede a su izquierda. Camine recto, gire por la puerta de la izquierda y suba las escaleras hasta la primera planta.","imgs/imgnodo_2_1", "up"),
-	('3', '2', "Situése de espaldas a la puerta, camine recto y gire a la izquierda hasta encontrarse el ascensor a su izquierda.","imgs/imgnodo_3_2", "0"),
-	('10', '2', "Situése de espaldas a la puerta de secretaría. Camine recto por la derecha hasta que a su izquierda esté la puerta del ascensor.","imgs/imgnodo_10_2", "0"),
-	('10', '3', "Situése de espaldas a la puerta de secretaría. Camino recto por la izquierda hasta que llegue a la puerta que da al exterior.","imgs/imgnodo_10_3", "0"),
-	('5', '3', "Situése de espaldas a la puerta, camine recto y gire a la derecha para entrar al edificio principal.","imgs/imgnodo_5_3", "0"),
-	('4', '3', "Suba las escaleras y a la derecha se encuentra la puerta de salida.","imgs/imgnodo_4_3", "up"),
-	('-2', '4', "Situése de espaldas a la puerta de la cafeteria y camine hacia las escaleras hasta que la puerta del aula de estudios se encuentre a su derecha.","imgs/imgnodo_-2_4", "0"),
-	('6', '5', "Situése de manera que el ascensor se encuentre a su izquierda. Camine recto hasta que vea a su izquierda la puerta y salga del edificio.","imgs/imgnodo_6_5", "0"),
-	('7', '6', "Situése con el ascensor a su derecha. Avance por el pasillo y baje las escaleras a su izquierda hasta la planta baja.","imgs/imgnodo_7_6", "down"),
-	('8', '7', "Situése con el ascensor a su derecha. Avance por el pasillo y baje las escaleras a su izquierda hasta la primera planta.","imgs/imgnodo_8_7", "down"),
-	('9', '8', "Situése con el ascensor a su derecha. Avance por el pasillo y baje las escaleras a su izquierda hasta la segunda planta.","imgs/imgnodo_9_8", "down"),
-	('-3', '9', "Sitúese con el aula a la izquierda. Camine recto por el pasillo hasta que se encuentre a su derecha la puerta del ascensor.","imgs/imgnodo_-3_9", "0"),
-	('11', '9', "Entre al edificio de las aulas, gire a la derecha y camine recto hasta que a su derecha se encuentre la puerta del ascensor.","imgs/imgnodo_11_9", "0"),
-	('-4', '10', "Situése de espaldas a la puerta de secretaría y avance hasta estar en medio del hall.","imgs/imgnodo_-4_10", "0"),
-	('-3', '11', "Salga del aula, gire a la derecha y camine recto. Cuando se encuentre a su izquierda la puerta de salida a las escaleras de emergencia, salga al exterior.","imgs/imgnodo_-3_11", "0"),
-	('-5', '11', "Salga del despacho y situése en dirección a las escaleras de emergencia. Camine recto y salga al exterior.","imgs/imgnodo_-5_11", "0"),
+	('1', '-1', "Situése de manera que la fuente quede a mano izquierda, cruce la puerta, gire a la derecha y camine recto hasta encontrarse enfrente de la puerta.", "65"),
+	('1', '2', "Situese de espaldas a la fuente y baje las escaleras. Cuando salga de las escaleras, gire a la derecha y camine recto hasta tener el ascensor a su derecha.", "down"),
+	('2', '3', "Situése de manera que la puerta del ascensor quede a su derecha. Camine recto y gire a la derecha para encontrarse con la puerta de salida del patio.", "-85"),
+	('2', '10', "Situése de manera que la puerta del ascensor quede a su derecha. Camine recto hasta que pase entre las columnas que le llevan al hall de secretaría.", "30"),
+	('3', '10', "Situese de espaldas a la puerta. Avance y pase entre las columnas que le llevan al hall de secretaría.", "65"),
+	('3', '5', "Salga por la puerta del edificio principal, gire a la izquierda y camine recto hasta llegar a la puerta del edificio de aulas.", "0"),
+	('3', '4', "Situése de cara a la puerta y baje por las escaleras de su derecha. A su izquierda se encuentra la puerta del aula de estudio.", "down"),
+	('4', '-2', "Situése de espaldas a la puerta del aula de estudio. Camine recto y gire a la izquierda en dirección a la puerta de la cafeteria.", "75"),
+	('5', '6', "Entre al edificio, gire a la derecha y continúe por el pasillo hasta que a su derecha se encuentre la puerta del ascensor de la planta 0.", "-105"),
+	('6', '7', "Suba las escaleras hasta la primera planta, luego gire a la derecha y camine recto hasta que la puerta del ascensor se encuentre a su izquierda.", "up"),
+	('7', '8', "Suba las escaleras hasta la segunda planta, luego gire a la derecha y camine recto hasta que la puerta del ascensor se encuentre a su izquierda.", "up"),
+	('8', '9', "Suba las escaleras hasta la tercera planta, luego gire a la derecha y camine recto hasta que la puerta del ascensor se encuentre a su izquierda.", "up"),
+	('9', '-3', "Situése de manera que la puerta del ascensor se encuentre a su izquierda. Camine recto hasta que se encuentre a su derecha la puerta del aula 3.5.", "105"),
+	('9', '11', "Situése de manera que la puerta del ascensor se encuentre a su izquierda. Camine recto hasta que pueda salir por la izquierda a las escaleras de emergencia.", "105"),
+	('10', '-4', "Avance por el hall en dirección contraria a la puerta de salida hasta que se encuentre la puerta de la secretaría.", "40"),
+	('11', '-3', "Entre al edificio de las aulas, gire a la derecha y camine recto hasta que a su izquierda se encuentre el aula 3.5.", "-92"),
+	('11', '-5', "Situése de espaldas a la puerta del edificio de las aulas. Entre por la puerta que tiene delante y avance hasta encontrar el despacho 21.", "155"),
+	('-1', '1', "Salga por la puerta principal de la biblioteca, camine recto y salga por la puerta de la izquierda.", "-75"),
+	('2', '1', "Situése de manera que la puerta del ascensor quede a su izquierda. Camine recto, gire por la puerta de la izquierda y suba las escaleras hasta la primera planta.", "up"),
+	('3', '2', "Situése de espaldas a la puerta, camine recto y gire a la izquierda hasta encontrarse el ascensor a su izquierda.", "110"),
+	('10', '2', "Situése de espaldas a la puerta de secretaría. Camine recto por la derecha hasta que a su izquierda esté la puerta del ascensor.", "-130"),
+	('10', '3', "Situése de espaldas a la puerta de secretaría. Camino recto por la izquierda hasta que llegue a la puerta que da al exterior.", "-100"),
+	('5', '3', "Situése de espaldas a la puerta, camine recto y gire a la derecha para entrar al edificio principal.", "-180"),
+	('4', '3', "Suba las escaleras y a la derecha se encuentra la puerta de salida.", "up"),
+	('-2', '4', "Situése de espaldas a la puerta de la cafeteria y camine hacia las escaleras hasta que la puerta del aula de estudios se encuentre a su derecha.", "-125"),
+	('6', '5', "Situése de manera que el ascensor se encuentre a su izquierda. Camine recto hasta que vea a su izquierda la puerta y salga del edificio.", "80"),
+	('7', '6', "Situése con el ascensor a su derecha. Avance por el pasillo y baje las escaleras a su izquierda hasta la planta baja.", "down"),
+	('8', '7', "Situése con el ascensor a su derecha. Avance por el pasillo y baje las escaleras a su izquierda hasta la primera planta.", "down"),
+	('9', '8', "Situése con el ascensor a su derecha. Avance por el pasillo y baje las escaleras a su izquierda hasta la segunda planta.", "down"),
+	('-3', '9', "Sitúese con el aula a la izquierda. Camine recto por el pasillo hasta que se encuentre a su derecha la puerta del ascensor.", "-110"),
+	('11', '9', "Entre al edificio de las aulas, gire a la derecha y camine recto hasta que a su derecha se encuentre la puerta del ascensor.", "-100"),
+	('-4', '10', "Situése de espaldas a la puerta de secretaría y avance hasta estar en medio del hall.", "-120"),
+	('-3', '11', "Salga del aula, gire a la derecha y camine recto. Cuando se encuentre a su izquierda la puerta de salida a las escaleras de emergencia, salga al exterior.", "75"),
+	('-5', '11', "Salga del despacho y situése en dirección a las escaleras de emergencia. Camine recto y salga al exterior.", "10"),
 ]
 
 HEADER_RUTAS = ["nodo1", "nodo2", "destino"]
@@ -147,7 +148,7 @@ c = conn.cursor()
 c.execute("CREATE TABLE nodos (nodo int, nombre text)")
 pandas.read_csv("nodos.csv").to_sql("nodos", conn, if_exists="append", index=False)
 
-c.execute("CREATE TABLE instrucciones (nodo1 int, nodo2 int, instrucciones text, imagen text, direccion text)")
+c.execute("CREATE TABLE instrucciones (nodo1 int, nodo2 int, instrucciones text, direccion text)")
 pandas.read_csv("instrucciones.csv").to_sql("instrucciones", conn, if_exists="append", index=False)
 
 c.execute("CREATE TABLE rutas (nodo1 int, nodo2 int, destino int)")
@@ -161,6 +162,18 @@ conn.close()
 shutil.copy(DB_FILENAME, "app/src/main/assets/databases/" + DB_FILENAME)
 
 
+# procesamiento de imagenes
+# for (node1, node2, _, _) in TABLA_INSTRUCCIONES:
+# 	node1_str = str(node1).replace("-", "m")
+# 	node2_str = str(node2).replace("-", "m")
+# 	filename = f"imgnodo_{node1_str}_{node2_str}"
+# 	path_jpg = f"fotos/{filename}.jpg"
+# 	path_png = f"app/src/main/res/drawable/{filename}.png"
+# 	print(path_jpg)
+# 	assert(Path(path_jpg).exists())
+# 	img = Image.open(path_jpg)
+# 	img_resize = img.resize((1200, 1600))
+# 	img_resize.save(path_png)
 
 
 # for elem in TABLA_INSTRUCCIONES:

@@ -104,7 +104,6 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
         });
 
         launchQr();
-        //doInstructions(-1);
 
         return root;
     }

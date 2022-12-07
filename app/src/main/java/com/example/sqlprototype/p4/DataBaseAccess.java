@@ -45,16 +45,16 @@ public class DataBaseAccess {
         String node1_str = String.valueOf(node1), destiny_str = String.valueOf(destiny);
         String node2_str = getNextNodo(node1_str, destiny_str);
         c = db.rawQuery(
-        "SELECT instrucciones, imagen, direccion FROM instrucciones WHERE nodo1=? and nodo2=?",
+        "SELECT instrucciones, direccion FROM instrucciones WHERE nodo1=? and nodo2=?",
             new String[]{node1_str, node2_str}
         );
         if (c.getCount() == 0)
             return null;
         c.moveToNext();
-        String instructions = c.getString(0), image = c.getString(1), direccion = c.getString(2);
+        String instructions = c.getString(0), direction = c.getString(1);
         int node2 = Integer.parseInt(node2_str);
         String node2Name = getNodeName(node2);
-        return new Instructions(instructions, node2Name, node2, direccion);
+        return new Instructions(instructions, node2Name, node2, direction);
     }
 
     public String getNodeName(int node) {
