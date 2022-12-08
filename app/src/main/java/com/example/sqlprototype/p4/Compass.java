@@ -50,7 +50,7 @@ public class Compass {
     private void enableCompass(int dirAngle) {
         this.dirAngle = dirAngle;
         img.setImageResource(R.drawable.arrow);
-        txt.setVisibility(View.VISIBLE);
+        txt.setVisibility(View.INVISIBLE);
         isCompassEnabled = true;
     }
 
