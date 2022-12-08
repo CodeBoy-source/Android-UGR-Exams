@@ -55,37 +55,34 @@
 
         <Button
             android:id="@+id/btnBiblioteca"
-            android:layout_width="160dp"
+            android:layout_width="140dp"
             android:layout_height="45dp"
+            android:layout_marginStart="20dp"
             android:text="Biblioteca"
             app:layout_constraintBottom_toTopOf="@+id/btnDespachoMarcelino"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
         <Button
             android:id="@+id/btnAula35"
-            android:layout_width="160dp"
+            android:layout_width="140dp"
             android:layout_height="45dp"
+            android:layout_marginStart="20dp"
             android:layout_marginBottom="20dp"
             android:text="Aula 3.5"
             app:layout_constraintBottom_toTopOf="@+id/btnDespachoMarcelino"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnBiblioteca" />
 
         <Button
             android:id="@+id/btnSecretaria"
-            android:layout_width="160dp"
+            android:layout_width="140dp"
             android:layout_height="45dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
             android:text="Secretaría"
             app:layout_constraintBottom_toTopOf="@+id/btnDespachoMarcelino"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.9"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnCafeteria" />
 
         <Button
@@ -102,13 +99,12 @@
 
         <Button
             android:id="@+id/btnCafeteria"
-            android:layout_width="160dp"
+            android:layout_width="140dp"
             android:layout_height="45dp"
+            android:layout_marginEnd="20dp"
             android:text="Cafetería"
             app:layout_constraintBottom_toTopOf="@+id/btnDespachoMarcelino"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.9"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
