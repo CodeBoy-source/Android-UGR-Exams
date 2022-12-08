@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch(item.getItemId()){
                 case R.id.menuHome:
+                    recordPatternFragment.unregisterListeners();
                     gpsEtsiitHomeFragment.cancelTxtSpeech();
                     gpsEtsiitHomeFragment.unregisterListener();
                     treatDebuggingInterface();
@@ -99,11 +100,13 @@ public class MainActivity extends AppCompatActivity {
 
                     return true;
                 case R.id.menuDialog:
+                    recordPatternFragment.unregisterListeners();
                     gpsEtsiitHomeFragment.unregisterListener();
                     gpsEtsiitHomeFragment.cancelTxtSpeech();
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,dialogFlowFragment).commit();
                     return true;
                 case R.id.mapa:
+                    recordPatternFragment.unregisterListeners();
                     gpsEtsiitHomeFragment.cancelTxtSpeech();
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, gpsEtsiitHomeFragment).commit();
                     return true;
@@ -135,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 if (permission != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(this, permissionsStorage, requestExternalStorage);
                 }
+                recordPatternFragment.registerListeners();
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, recordPatternFragment).commit();
             }else
                 getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();

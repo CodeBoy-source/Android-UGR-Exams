@@ -110,6 +110,15 @@ public class RecordPattern extends Fragment implements SensorEventListener {
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_NORMAL);
     }
 
+    public void registerListeners(){
+        if(sensorManager!=null) {
+            //add listener for accelerometer
+            sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+            //add listener for gyroscope
+            sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_NORMAL);
+        }
+    }
+
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         // TODO Auto-generated method stub
@@ -128,9 +137,6 @@ public class RecordPattern extends Fragment implements SensorEventListener {
             coordX.setText("X: "+x);
             coordY.setText("Y: "+y);
             coordZ.setText("Z: "+z);
-
-            if(findPattern.read_acc(event.values))
-                Toast.makeText(getContext(), "ACCELEROMETER", Toast.LENGTH_SHORT).show();
 
             if(record && filecreated)
             {
@@ -155,6 +161,9 @@ public class RecordPattern extends Fragment implements SensorEventListener {
             coordYRoll.setText("Orientation Y (Pitch) :" + Float.toString(event.values[1]));
             coordZYaw.setText("Orientation Z (Yaw):" + Float.toString(event.values[2]));
 
+            if(findPattern.read_gyro_qr(event.values))
+                Toast.makeText(getContext(), "ACCELEROMETER", Toast.LENGTH_SHORT).show();
+
             if(findPattern.read_gyro(event.values))
                 Toast.makeText(getContext(), "GYROSCOPIO", Toast.LENGTH_SHORT).show();
 
@@ -174,4 +183,10 @@ public class RecordPattern extends Fragment implements SensorEventListener {
         }
 
     }
+
+    public void unregisterListeners(){
+        if(sensorManager!=null)
+            sensorManager.unregisterListener(this);
+    }
+
 }
