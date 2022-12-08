@@ -40,6 +40,14 @@ public class Compass {
         }
     }
 
+    public void desactiveView(){
+        isCompassEnabled = false;
+        img.clearAnimation();
+        img.setVisibility(View.GONE);
+        txt.setVisibility(View.GONE);
+
+    }
+
     private void disableCompass(int newResource) {
         isCompassEnabled = false;
         img.setImageResource(newResource);

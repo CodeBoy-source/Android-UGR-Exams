@@ -79,6 +79,7 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
         imgInstructions = root.findViewById(R.id.imgInstructions);
         imgCompass = root.findViewById(R.id.imgCompass);
 
+
         doubleSwipper = new DoubleSwipper(root, this);
         compass = new Compass(imgCompass, txtAngle);
 
@@ -142,11 +143,14 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
             if(currentInstr!=null)
                 respuesta_ = "¡Hemos llegado a " + currentInstr.nextNodeName + "! Hasta la próxima.";
             else
-                respuesta_ = "¡Ya estamos donde deseamos!";
+                respuesta_ = "¡Ya se encuentra en su destino!";
             textToSpeechEngine.speak(respuesta_, TextToSpeech.QUEUE_FLUSH, null, "tts1");
             txtInstructions.setText(respuesta_);
             txtNextNode.setText(respuesta_);
-            imgInstructions.setImageResource(R.drawable.logougr2);
+            imgInstructions.setImageResource(R.drawable.destino);
+            compass.desactiveView();
+
+
         }else {
             // Get instructions from db
             DataBaseAccess db = DataBaseAccess.getInstance(root.getContext());
