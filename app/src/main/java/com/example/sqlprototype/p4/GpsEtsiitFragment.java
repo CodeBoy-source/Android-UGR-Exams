@@ -46,6 +46,10 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
 
     SensorManager sensorManager;
     Sensor sensor, sensorgyroscope, magnetometerSensor;
+    private long lastQRCompleted;
+    private long lastNextCompleted;
+    private long QRdelay = 750;
+    private long NextDelay = 750;
 
 
     @Override
@@ -117,15 +121,17 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
     public void onSensorChanged(SensorEvent event) {
         if(event.sensor.getType()==Sensor.TYPE_ACCELEROMETER) {
             compass.updateAccelerometer(event.values);
-            if (findPattern.read_acc(event.values)) {
-                // Launch QR to get new current node and display new instructions
-                launchQr();
-            }
         }
         if(event.sensor.getType()==Sensor.TYPE_GYROSCOPE) {
-            if (findPattern.read_gyro(event.values)) {
+            if (System.currentTimeMillis() - lastQRCompleted > QRdelay && findPattern.read_gyro_qr(event.values) ) {
+                // Launch QR to get new current node and display new instructions
+                launchQr();
+                lastQRCompleted = System.currentTimeMillis();
+            }
+            if (System.currentTimeMillis() - lastNextCompleted > NextDelay && findPattern.read_gyro(event.values) ) {
                 // Display instructions from next node
                 doInstructions(currentInstr.nextNode);
+                lastNextCompleted = System.currentTimeMillis();
             }
         }
         if(event.sensor == magnetometerSensor) {
