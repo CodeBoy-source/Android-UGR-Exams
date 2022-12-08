@@ -105,6 +105,7 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
                     Toast.makeText(getContext(), "Es necesario escanear un QR para indicar la localización inicial", Toast.LENGTH_SHORT).show();
                     launchQr();
                 }
+                launchingQR = false;
                 return;
             }
 
