@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentActivity;
 
 
 import com.example.sqlprototype.R;
+import com.journeyapps.barcodescanner.CaptureActivity;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
@@ -183,7 +184,7 @@ public class GpsEtsiitFragment extends Fragment implements DoubleSwipperCallback
         ScanOptions options = new ScanOptions();
         options.setBeepEnabled(false);
         options.setOrientationLocked(false);
-        options.setCaptureActivity(CaptureAct.class);
+        options.setCaptureActivity(CaptureActivity.class);
         options.setPrompt("Escanea el código QR");
         barLauncher.launch(options);
     }
